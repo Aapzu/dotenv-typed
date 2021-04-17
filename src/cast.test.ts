@@ -1,11 +1,11 @@
 import cast from '../src/cast'
-import { TEST_CONFIG, TEST_SCHEMA } from './fixtures'
+import { TEST_CONFIG, NORMALIZED_TEST_SCHEMA } from './fixtures'
 
 describe('cast', () => {
   describe('String type', () => {
     it('does nothing for String type', () => {
       const casted = cast(
-        { STRING: TEST_SCHEMA.STRING },
+        { STRING: NORMALIZED_TEST_SCHEMA.STRING },
         { STRING: TEST_CONFIG.STRING }
       )
       expect(casted).toEqual({
@@ -17,7 +17,7 @@ describe('cast', () => {
   describe('Number type', () => {
     it('parses int', () => {
       const casted = cast(
-        { NUMBER_INT: TEST_SCHEMA.NUMBER_INT },
+        { NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT },
         { NUMBER_INT: TEST_CONFIG.NUMBER_INT }
       )
       expect(casted).toEqual({
@@ -27,7 +27,7 @@ describe('cast', () => {
 
     it('parses float', () => {
       const casted = cast(
-        { NUMBER_FLOAT: TEST_SCHEMA.NUMBER_FLOAT },
+        { NUMBER_FLOAT: NORMALIZED_TEST_SCHEMA.NUMBER_FLOAT },
         { NUMBER_FLOAT: TEST_CONFIG.NUMBER_FLOAT }
       )
       expect(casted).toEqual({
@@ -37,7 +37,7 @@ describe('cast', () => {
 
     it('parses scientific number format', () => {
       const casted = cast(
-        { NUMBER_SCIENTIFIC: TEST_SCHEMA.NUMBER_SCIENTIFIC },
+        { NUMBER_SCIENTIFIC: NORMALIZED_TEST_SCHEMA.NUMBER_SCIENTIFIC },
         { NUMBER_SCIENTIFIC: TEST_CONFIG.NUMBER_SCIENTIFIC }
       )
       expect(casted).toEqual({
@@ -49,7 +49,7 @@ describe('cast', () => {
   describe('Boolean type', () => {
     it('parses true', () => {
       const casted = cast(
-        { BOOLEAN_TRUE: TEST_SCHEMA.BOOLEAN_TRUE },
+        { BOOLEAN_TRUE: NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE },
         { BOOLEAN_TRUE: TEST_CONFIG.BOOLEAN_TRUE }
       )
       expect(casted).toEqual({
@@ -59,7 +59,7 @@ describe('cast', () => {
 
     it('parses false', () => {
       const casted = cast(
-        { BOOLEAN_FALSE: TEST_SCHEMA.BOOLEAN_FALSE },
+        { BOOLEAN_FALSE: NORMALIZED_TEST_SCHEMA.BOOLEAN_FALSE },
         { BOOLEAN_FALSE: TEST_CONFIG.BOOLEAN_FALSE }
       )
       expect(casted).toEqual({
@@ -71,7 +71,7 @@ describe('cast', () => {
   describe('Enum type', () => {
     it('parses true', () => {
       const casted = cast(
-        { BOOLEAN_TRUE: TEST_SCHEMA.BOOLEAN_TRUE },
+        { BOOLEAN_TRUE: NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE },
         { BOOLEAN_TRUE: TEST_CONFIG.BOOLEAN_TRUE }
       )
       expect(casted).toEqual({
@@ -81,8 +81,8 @@ describe('cast', () => {
 
     it('parses false', () => {
       const casted = cast(
-        { BOOLEAN_FALSE: TEST_SCHEMA.BOOLEAN_FALSE },
-        { BOOLEAN_FALSE: TEST_CONFIG.BOOLEAN_FALSE }
+        { BOOLEAN_FALSE: NORMALIZED_TEST_SCHEMA['BOOLEAN_FALSE'] },
+        { BOOLEAN_FALSE: TEST_CONFIG['BOOLEAN_FALSE'] }
       )
       expect(casted).toEqual({
         BOOLEAN_FALSE: false,
@@ -93,7 +93,7 @@ describe('cast', () => {
   describe('String array type', () => {
     it('parses true', () => {
       const casted = cast(
-        { BOOLEAN_TRUE: TEST_SCHEMA.BOOLEAN_TRUE },
+        { BOOLEAN_TRUE: NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE },
         { BOOLEAN_TRUE: TEST_CONFIG.BOOLEAN_TRUE }
       )
       expect(casted).toEqual({
@@ -103,7 +103,7 @@ describe('cast', () => {
 
     it('parses false', () => {
       const casted = cast(
-        { BOOLEAN_FALSE: TEST_SCHEMA.BOOLEAN_FALSE },
+        { BOOLEAN_FALSE: NORMALIZED_TEST_SCHEMA.BOOLEAN_FALSE },
         { BOOLEAN_FALSE: TEST_CONFIG.BOOLEAN_FALSE }
       )
       expect(casted).toEqual({

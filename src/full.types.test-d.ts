@@ -1,6 +1,6 @@
 import { expectType } from 'tsd'
 import { parse } from '..'
-import { TEST_SCHEMA } from './fixtures'
+import { NORMALIZED_TEST_SCHEMA } from './fixtures'
 
 const {
   BOOLEAN_TRUE,
@@ -9,7 +9,7 @@ const {
   NUMBER_FLOAT,
   NUMBER_SCIENTIFIC,
   STRING,
-} = parse('foobar', TEST_SCHEMA)
+} = parse('foobar', NORMALIZED_TEST_SCHEMA)
 
 expectType<boolean>(BOOLEAN_TRUE)
 expectType<boolean>(BOOLEAN_FALSE)
