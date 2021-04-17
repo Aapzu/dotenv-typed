@@ -1,10 +1,15 @@
 import validate from '../src/validate'
-import { INVALID_TEST_CONFIG, TEST_CONFIG, TEST_SCHEMA } from './fixtures'
+import {
+  INVALID_TEST_CONFIG,
+  TEST_CONFIG,
+  NORMALIZED_TEST_SCHEMA,
+} from './fixtures'
+import { omit } from 'lodash'
 
 describe('validate', () => {
   it("doesn't throw if called with valid schema and config", () => {
     expect(() => {
-      validate(TEST_SCHEMA, TEST_CONFIG)
+      validate(NORMALIZED_TEST_SCHEMA, TEST_CONFIG)
     }).not.toThrow()
   })
 
@@ -12,10 +17,9 @@ describe('validate', () => {
     expect(() => {
       validate(
         {
-          STRING: TEST_SCHEMA.STRING,
-          NUMBER_INT: TEST_SCHEMA.NUMBER_INT,
+          STRING: NORMALIZED_TEST_SCHEMA.STRING,
+          NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT,
         },
-        // @ts-ignore
         { NUMBER_INT: TEST_CONFIG.NUMBER_INT }
       )
     }).toThrow('Value for STRING missing from config')
@@ -25,9 +29,9 @@ describe('validate', () => {
     expect(() => {
       validate(
         {
-          STRING: TEST_SCHEMA.STRING,
-          NUMBER_INT: TEST_SCHEMA.NUMBER_INT,
-          BOOLEAN_TRUE: TEST_SCHEMA.BOOLEAN_TRUE,
+          STRING: NORMALIZED_TEST_SCHEMA.STRING,
+          NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT,
+          BOOLEAN_TRUE: NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE,
         },
         // @ts-ignore
         { STRING: TEST_CONFIG.NUMBER_INT }
@@ -38,7 +42,7 @@ describe('validate', () => {
   it('throws if one key is missing from schema', () => {
     expect(() => {
       validate(
-        { NUMBER_INT: TEST_SCHEMA.NUMBER_INT },
+        { NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT },
         {
           NUMBER_INT: TEST_CONFIG.NUMBER_INT,
           // @ts-ignore
@@ -51,7 +55,7 @@ describe('validate', () => {
   it('throws if multiple keys are missing from schema', () => {
     expect(() => {
       validate(
-        { STRING: TEST_SCHEMA.STRING },
+        { STRING: NORMALIZED_TEST_SCHEMA.STRING },
         {
           STRING: TEST_CONFIG.STRING,
           // @ts-ignore
@@ -62,25 +66,35 @@ describe('validate', () => {
     }).toThrow('Keys NUMBER_INT, BOOLEAN_TRUE missing from schema')
   })
 
-  it('throws if the config contains and invalid NUMBER_INT', () => {
+  it.each(
+    Object.keys(
+      omit(NORMALIZED_TEST_SCHEMA, 'STRING', 'STRING_ARRAY')
+    ) as (keyof typeof NORMALIZED_TEST_SCHEMA)[]
+  )('throws if the config contains an invalid %s', (key) => {
+    const value = INVALID_TEST_CONFIG[key]
     expect(() => {
       validate(
-        { NUMBER_INT: TEST_SCHEMA.NUMBER_INT },
+        { [key]: NORMALIZED_TEST_SCHEMA[key] },
         {
-          NUMBER_INT: INVALID_TEST_CONFIG.NUMBER_INT,
+          [key]: INVALID_TEST_CONFIG[key],
         }
       )
-    }).toThrow('Value asdf of key NUMBER_INT is not a valid Number')
+    }).toThrow(`Value ${value} of key ${key} is not a valid`)
   })
 
-  it('throws if the config contains and invalid BOOLEAN_TRUE', () => {
+  it.each(
+    Object.keys(
+      omit(NORMALIZED_TEST_SCHEMA, 'STRING', 'STRING_ARRAY')
+    ) as (keyof typeof NORMALIZED_TEST_SCHEMA)[]
+  )('throws if the config contains an invalid %s', (key) => {
+    const value = INVALID_TEST_CONFIG[key]
     expect(() => {
       validate(
-        { BOOLEAN_TRUE: TEST_SCHEMA.BOOLEAN_TRUE },
+        { [key]: NORMALIZED_TEST_SCHEMA[key] },
         {
-          BOOLEAN_TRUE: INVALID_TEST_CONFIG.BOOLEAN_TRUE,
+          [key]: INVALID_TEST_CONFIG[key],
         }
       )
-    }).toThrow('Value asdf of key BOOLEAN_TRUE is not a valid Boolean')
+    }).toThrow(`Value ${value} of key ${key} is not a valid`)
   })
 })

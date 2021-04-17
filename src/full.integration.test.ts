@@ -1,6 +1,6 @@
 import fs from 'fs'
 import tmp from 'tmp'
-import { TEST_CONFIG, TEST_SCHEMA } from './fixtures'
+import { TEST_CONFIG, NORMALIZED_TEST_SCHEMA } from './fixtures'
 import { parse } from '..'
 
 describe('full test', () => {
@@ -19,7 +19,7 @@ describe('full test', () => {
   })
 
   it('parses the config from .env file to correct format', () => {
-    const config = parse(fileName, TEST_SCHEMA)
+    const config = parse(fileName, NORMALIZED_TEST_SCHEMA)
     expect(config).toEqual({
       STRING: 'foo',
       NUMBER_INT: 1234,
@@ -27,6 +27,10 @@ describe('full test', () => {
       NUMBER_SCIENTIFIC: 6.0221409e23,
       BOOLEAN_TRUE: true,
       BOOLEAN_FALSE: false,
+      BOOLEAN_ARRAY: [true, false],
+      ENUM: 'foo',
+      NUMBER_ARRAY: [1, 2, 3, 4],
+      STRING_ARRAY: ['foo', 'bar', 'baz'],
     })
   })
 })

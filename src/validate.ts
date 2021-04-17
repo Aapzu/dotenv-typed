@@ -2,10 +2,10 @@ import { DotenvParseOutput } from 'dotenv'
 import { forOwn } from 'lodash'
 import {
   ConfigItemType,
-  ConfigItemTypeName,
+  ConfigItemValue,
   NormalizedConfigSchema,
 } from './types'
-import { getValidators } from './utils'
+import { getItemTypeModule } from './utils'
 
 const findMissingKeys = (
   schema: NormalizedConfigSchema,
@@ -45,7 +45,9 @@ const getNotValidErrorMessage = (
   typeName: string
 ) => `Value ${value} of key ${key} is not a valid ${typeName}`
 
-const getNotValidDefaultErrorMessage = <T extends ReturnType<ConfigItemType>>(
+const getNotValidDefaultErrorMessage = <
+  T extends ConfigItemValue<ConfigItemType>
+>(
   key: string,
   value: T,
   typeName: string
@@ -67,31 +69,24 @@ const validate = <S extends NormalizedConfigSchema>(
 
     if (!schemaObject) {
       throw new Error(
-        `Missing key: ${key} (this should be caught already in the upper check)`
+        `Missing key: ${key} (if this happens, something is seriously wrong)`
       )
     }
 
-    const { validateItem, validateDefaultValue, typeName } = getValidators(
+    const { validateStringValue, validateValue, typeName } = getItemTypeModule(
       schemaObject
     )
 
-    if (!validateItem(configValue)) {
-      throw new Error(
-        getNotValidErrorMessage(
-          key,
-          configValue,
-          ConfigItemTypeName[typeName]!.toString()
-        )
-      )
+    if (!validateStringValue(configValue, schemaObject)) {
+      throw new Error(getNotValidErrorMessage(key, configValue, typeName))
     }
 
-    if (schemaObject?.default && !validateDefaultValue(schemaObject.default)) {
+    if (
+      schemaObject?.default &&
+      !validateValue(schemaObject.default, schemaObject)
+    ) {
       throw new Error(
-        getNotValidDefaultErrorMessage(
-          key,
-          schemaObject.default,
-          ConfigItemTypeName[typeName]!.toString()
-        )
+        getNotValidDefaultErrorMessage(key, schemaObject.default, typeName)
       )
     }
   })

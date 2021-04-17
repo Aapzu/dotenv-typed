@@ -3,6 +3,9 @@ export enum ConfigItemTypeName {
   Number,
   Boolean,
   Enum,
+  StringArray,
+  NumberArray,
+  BooleanArray,
 }
 
 export type ConfigItemType =
@@ -12,16 +15,20 @@ export type ConfigItemType =
   | Array<string>
   | Array<NumberConstructor>
   | Array<StringConstructor>
+  | Array<BooleanConstructor>
 
-export type ConfigItemValue<T extends ConfigItemType> = T extends (
-  ...args: any[]
-) => any
-  ? ReturnType<T>
-  : T extends Array<infer U>
+export type ConfigItemValue<
+  Item extends ConfigItem,
+  Type extends ConfigItemType = Item extends ConfigItemObjectType
+    ? Item['type']
+    : Item
+> = Type extends (...args: any[]) => any
+  ? ReturnType<Type>
+  : Type extends Array<infer U>
   ? U extends (...args: any[]) => any
-    ? ReturnType<U>
+    ? Array<ReturnType<U>>
     : U
-  : T
+  : Type
 
 export type ConfigItemObjectType<T extends ConfigItemType = ConfigItemType> = {
   type: T
@@ -31,22 +38,35 @@ export type ConfigItemObjectType<T extends ConfigItemType = ConfigItemType> = {
 
 export type ConfigItem = ConfigItemType | ConfigItemObjectType
 
-export interface ConfigSchema {
-  [key: string]: ConfigItem
+export type ConfigSchema<
+  S extends Record<string, ConfigItem> = Record<string, ConfigItem>
+> = {
+  [K in keyof S]: S[K]
 }
 
 export type NormalizedConfigItem<
-  T extends ConfigItem = ConfigItemType
-> = T extends ConfigItemType ? ConfigItemObjectType<T> : T
+  S extends ConfigItem
+> = S extends ConfigItemType ? ConfigItemObjectType<S> : S
 
 export type NormalizedConfigSchema<S extends ConfigSchema = ConfigSchema> = {
   [K in keyof S]: NormalizedConfigItem<S[K]>
 }
 
-export type EnvType<S extends NormalizedConfigSchema> = {
-  [K in keyof S]: ConfigItemValue<S[K]['type']>
+export type EnvType<S extends ConfigSchema> = {
+  [K in keyof S]: ConfigItemValue<S[K]>
 }
 
 export type DotenvOutput<S extends NormalizedConfigSchema> = {
   [K in keyof S]: string
+}
+
+export interface TypeModule<T extends ConfigItemType> {
+  isOfType: (item: ConfigItemObjectType | undefined) => boolean
+  parse: (value: string) => ConfigItemValue<T>
+  validateStringValue: (
+    value: string,
+    schemaObject: ConfigItemObjectType<T>
+  ) => boolean
+  validateValue: (value: any, schemaObject: ConfigItemObjectType<T>) => boolean
+  typeName: string
 }

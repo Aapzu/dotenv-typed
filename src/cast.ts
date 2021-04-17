@@ -1,6 +1,7 @@
 import { mapValues } from 'lodash'
-import { isBooleanItem, isNumberItem, isStringItem } from './utils'
 import { DotenvOutput, EnvType, NormalizedConfigSchema } from './types'
+
+import { getItemTypeModule } from './utils'
 
 const cast = <S extends NormalizedConfigSchema>(
   schema: S,
@@ -18,19 +19,9 @@ const cast = <S extends NormalizedConfigSchema>(
       }
     }
 
-    if (isStringItem(schemaValue) && configValue) {
-      return configValue
-    }
+    const { parse } = getItemTypeModule(schemaValue)
 
-    if (isNumberItem(schemaValue) && configValue) {
-      return parseFloat(configValue)
-    }
-
-    if (isBooleanItem(schemaValue)) {
-      return !!configValue && configValue.toLowerCase() === 'true'
-    }
-
-    return configValue
+    return parse(configValue!)
   }) as EnvType<S>
 
 export default cast
