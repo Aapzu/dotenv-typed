@@ -6,13 +6,13 @@ import {
   TypeModule,
 } from './types'
 
-import booleanModule from './types/boolean'
-import booleanArrayModule from './types/booleanArray'
-import enumModule from './types/enum'
-import numberModule from './types/number'
-import numberArrayModule from './types/numberArray'
-import stringModule from './types/string'
-import stringArrayModule from './types/stringArray'
+import booleanModule from './typeModules/boolean'
+import booleanArrayModule from './typeModules/booleanArray'
+import enumModule from './typeModules/enum'
+import numberModule from './typeModules/number'
+import numberArrayModule from './typeModules/numberArray'
+import stringModule from './typeModules/string'
+import stringArrayModule from './typeModules/stringArray'
 
 export const isConfigItemObject = (
   item: ConfigItem
