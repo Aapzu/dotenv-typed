@@ -35,7 +35,7 @@ describe('numberArray module', () => {
       ${'multiple items'}         | ${'1,2,3'}
       ${'multiple decimal items'} | ${'1.0,2.113213,3.40e21'}
     `('returns true for $label', ({ value }) => {
-      expect(validateStringValue(value)).toBe(true)
+      expect(validateStringValue(value, { type: Array(Number) })).toBe(true)
     })
 
     describe.each`
@@ -47,7 +47,7 @@ describe('numberArray module', () => {
       ${'null and undefined'}         | ${['null', 'undefined']}
     `('$label', ({ values }) => {
       it.each(values as string[])('returns false for %s', (value) => {
-        expect(validateStringValue(value)).toBe(false)
+        expect(validateStringValue(value, { type: Array(Number) })).toBe(false)
       })
     })
   })
@@ -60,7 +60,7 @@ describe('numberArray module', () => {
       ${'multiple items array'}  | ${[1.0, 1.0, 14124124.014123, 0.123]}
       ${'special numbers array'} | ${[NaN, Infinity]}
     `('returns true for $label', ({ value }) => {
-      expect(validateValue(value)).toBe(true)
+      expect(validateValue(value, { type: Array(Number) })).toBe(true)
     })
 
     describe.each`
@@ -70,7 +70,7 @@ describe('numberArray module', () => {
       ${'null'}      | ${null}
       ${'undefined'} | ${undefined}
     `('returns false for $label', ({ value }) => {
-      expect(validateValue(value)).toBe(false)
+      expect(validateValue(value, { type: Array(Number) })).toBe(false)
     })
   })
 })

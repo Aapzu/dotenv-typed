@@ -2,7 +2,12 @@ import dotenv from 'dotenv'
 import fs from 'fs'
 import cast from './cast'
 import normalize from './normalize'
-import { ConfigSchema, DotenvOutput } from './types'
+import {
+  ConfigSchema,
+  DotenvOutput,
+  EnvType,
+  NormalizedConfigSchema,
+} from './types'
 import { resolve } from 'path'
 import validate from './validate'
 
@@ -37,7 +42,7 @@ const parse = <S extends ConfigSchema>(
     debug = false,
     validate: validateOpt = true,
   }: ParseOptions = {}
-) => {
+): EnvType<NormalizedConfigSchema<S>> => {
   const envFile = fs.readFileSync(path, { encoding })
   const normalizedSchema = normalize(schema)
   const parsedOutput = dotenv.parse(envFile, { debug })

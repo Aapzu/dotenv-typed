@@ -55,9 +55,12 @@ describe('enum module', () => {
       ${'booleans'}           | ${[true, false]}
       ${'null and undefined'} | ${[null, undefined]}
     `('$label', ({ values }) => {
-      it.each(values as any[])(`returns false for %s`, (value) => {
-        expect(validateValue(value, schema)).toBe(false)
-      })
+      it.each(values as (string | number | null | undefined)[])(
+        `returns false for %s`,
+        (value) => {
+          expect(validateValue(value, schema)).toBe(false)
+        }
+      )
     })
   })
 })

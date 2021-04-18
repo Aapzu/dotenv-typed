@@ -57,7 +57,7 @@ const getNotValidDefaultErrorMessage = <
 const validate = <S extends NormalizedConfigSchema>(
   schema: S,
   config: DotenvParseOutput
-) => {
+): void => {
   findMissingKeys(schema, config)
 
   forOwn(config, (configValue, key) => {
