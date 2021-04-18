@@ -1,4 +1,4 @@
-import enumModule from './enum'
+import enumModule from '../../src/typeModules/enum'
 
 const { isOfType, validateStringValue, validateValue } = enumModule
 

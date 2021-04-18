@@ -1,4 +1,4 @@
-import numberModule from './number'
+import numberModule from '../../src/typeModules/number'
 
 const { isOfType, validateStringValue, validateValue } = numberModule
 

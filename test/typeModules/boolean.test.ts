@@ -1,4 +1,4 @@
-import booleanModule from './boolean'
+import booleanModule from '../../src/typeModules/boolean'
 
 const { isOfType, validateStringValue, validateValue } = booleanModule
 

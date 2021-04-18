@@ -1,4 +1,4 @@
-import stringModule from './string'
+import stringModule from '../../src/typeModules/string'
 
 const { isOfType, validateStringValue, validateValue } = stringModule
 
