@@ -31,7 +31,7 @@ describe('boolean module', () => {
       ${'false values'} | ${['FALSE', 'FalSe', 'false']}
     `('$label', ({ values }) => {
       it.each(values as string[])(`returns true for %s`, (value) => {
-        expect(validateStringValue(value)).toBe(true)
+        expect(validateStringValue(value, { type: Boolean })).toBe(true)
       })
     })
 
@@ -44,14 +44,14 @@ describe('boolean module', () => {
       ${'null and undefined'}     | ${['null', 'undefined']}
     `('$label', ({ values }) => {
       it.each(values as string[])(`returns false for %s`, (value) => {
-        expect(validateStringValue(value)).toBe(false)
+        expect(validateStringValue(value, { type: Boolean })).toBe(false)
       })
     })
   })
 
   describe('validateValue', () => {
     it.each([true, false])(`returns true for %s`, (value) => {
-      expect(validateValue(value)).toBe(true)
+      expect(validateValue(value, { type: Boolean })).toBe(true)
     })
     describe.each`
       label                   | values
@@ -59,9 +59,12 @@ describe('boolean module', () => {
       ${'numbers'}            | ${[1, 2]}
       ${'null and undefined'} | ${[null, undefined]}
     `('$label', ({ values }) => {
-      it.each(values as any[])(`returns false for %s`, (value) => {
-        expect(validateValue(value)).toBe(false)
-      })
+      it.each(values as (string | number | null | undefined)[])(
+        `returns false for %s`,
+        (value) => {
+          expect(validateValue(value, { type: Boolean })).toBe(false)
+        }
+      )
     })
   })
 })

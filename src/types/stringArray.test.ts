@@ -38,7 +38,7 @@ describe('stringArray module', () => {
       ${'array of multiple kinds of items'} | ${',foo,1,true,bar'}
       ${'array with empty items'}           | ${'foo,,,bar'}
     `('returns true for $label', ({ value }) => {
-      expect(validateStringValue(value as string, { type: String })).toBe(true)
+      expect(validateStringValue(value, { type: Array(String) })).toBe(true)
     })
   })
 
@@ -50,7 +50,7 @@ describe('stringArray module', () => {
       ${'single empty item array'} | ${['']}
       ${'multiple items array'}    | ${['foo', 'bar']}
     `('returns true for $label', ({ value }) => {
-      expect(validateValue(value)).toBe(true)
+      expect(validateValue(value, { type: Array(String) })).toBe(true)
     })
 
     describe.each`
@@ -61,7 +61,7 @@ describe('stringArray module', () => {
       ${'undefined'}    | ${undefined}
       ${'number array'} | ${[1, 2, 3]}
     `('returns false for $label', ({ value }) => {
-      expect(validateValue(value)).toBe(false)
+      expect(validateValue(value, { type: Array(String) })).toBe(false)
     })
   })
 })

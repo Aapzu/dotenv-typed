@@ -17,15 +17,18 @@ export type ConfigItemType =
   | Array<StringConstructor>
   | Array<BooleanConstructor>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ReturnTypeArg = (...args: any) => any
+
 export type ConfigItemValue<
   Item extends ConfigItem,
   Type extends ConfigItemType = Item extends ConfigItemObjectType
     ? Item['type']
     : Item
-> = Type extends (...args: any[]) => any
+> = Type extends ReturnTypeArg
   ? ReturnType<Type>
   : Type extends Array<infer U>
-  ? U extends (...args: any[]) => any
+  ? U extends ReturnTypeArg
     ? Array<ReturnType<U>>
     : U
   : Type
@@ -67,6 +70,9 @@ export interface TypeModule<T extends ConfigItemType> {
     value: string,
     schemaObject: ConfigItemObjectType<T>
   ) => boolean
-  validateValue: (value: any, schemaObject: ConfigItemObjectType<T>) => boolean
+  validateValue: (
+    value: unknown,
+    schemaObject: ConfigItemObjectType<T>
+  ) => boolean
   typeName: string
 }

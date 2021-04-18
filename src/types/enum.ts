@@ -14,8 +14,8 @@ const enumModule: TypeModule<Array<string>> = {
     schema: ConfigItemObjectType<string[]>
   ) => schema.type.includes(value),
 
-  validateValue: (value: string, schema: ConfigItemObjectType<string[]>) =>
-    schema.type.includes(value),
+  validateValue: (value, schema) =>
+    typeof value === 'string' && schema.type.includes(value),
 
   typeName: 'enum',
 }

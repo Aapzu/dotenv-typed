@@ -31,7 +31,7 @@ describe('string module', () => {
       ${'a string with weird characters'} | ${'😆 ɸ ɷ ɲ ˿ ξ'}
       ${'an empty string'}                | ${''}
     `('returns true for {label} ', ({ value }) => {
-      expect(validateStringValue(value)).toBe(true)
+      expect(validateStringValue(value, { type: String })).toBe(true)
     })
   })
 
@@ -42,7 +42,7 @@ describe('string module', () => {
       ${'a string with weird characters'} | ${'😆 ɸ ɷ ɲ ˿ ξ'}
       ${'an empty string'}                | ${''}
     `('returns true for {label} ', ({ value }) => {
-      expect(validateValue(value)).toBe(true)
+      expect(validateValue(value, { type: String })).toBe(true)
     })
     it.each`
       label          | value
@@ -51,7 +51,7 @@ describe('string module', () => {
       ${'undefined'} | ${undefined}
       ${'array'}     | ${[]}
     `('returns false for {label} ', ({ value }) => {
-      expect(validateValue(value)).toBe(false)
+      expect(validateValue(value, { type: String })).toBe(false)
     })
   })
 })

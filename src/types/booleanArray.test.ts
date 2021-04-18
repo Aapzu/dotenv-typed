@@ -37,7 +37,7 @@ describe('booleanArray module', () => {
       ${'multiple items'}                       | ${'true,true,false'}
       ${'multiple values with different cases'} | ${'TRUE,false,FAlsE'}
     `('returns true for $label', ({ value }) => {
-      expect(validateStringValue(value)).toBe(true)
+      expect(validateStringValue(value, { type: Array(Boolean) })).toBe(true)
     })
 
     describe.each`
@@ -48,7 +48,7 @@ describe('booleanArray module', () => {
       ${'null and undefined'}          | ${['null', 'undefined']}
     `('$label', ({ values }) => {
       it.each(values as string[])('returns false for %s', (value) => {
-        expect(validateStringValue(value)).toBe(false)
+        expect(validateStringValue(value, { type: Array(Boolean) })).toBe(false)
       })
     })
   })
@@ -60,7 +60,7 @@ describe('booleanArray module', () => {
       ${'single item array'}    | ${[true]}
       ${'multiple items array'} | ${[true, false, true]}
     `('returns true for $label', ({ value }) => {
-      expect(validateValue(value)).toBe(true)
+      expect(validateValue(value, { type: Array(Boolean) })).toBe(true)
     })
 
     describe.each`
@@ -71,7 +71,7 @@ describe('booleanArray module', () => {
       ${'number array'} | ${[1, 2, 3]}
       ${'undefined'}    | ${undefined}
     `('returns false for $label', ({ value }) => {
-      expect(validateValue(value)).toBe(false)
+      expect(validateValue(value, { type: Array(Boolean) })).toBe(false)
     })
   })
 })

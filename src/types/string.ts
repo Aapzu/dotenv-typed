@@ -6,9 +6,9 @@ const stringModule: TypeModule<StringConstructor> = {
 
   parse: (value) => value,
 
-  validateStringValue: (_value) => true,
+  validateStringValue: () => true,
 
-  validateValue: (value: string) => typeof value === 'string',
+  validateValue: (value) => typeof value === 'string',
 
   typeName: 'string',
 }

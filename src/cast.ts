@@ -17,11 +17,14 @@ const cast = <S extends NormalizedConfigSchema>(
       if (schemaValue.optional) {
         return undefined
       }
+      throw new Error(
+        `Config value for ${key} missing, even though 'optional' is not true`
+      )
     }
 
     const { parse } = getItemTypeModule(schemaValue)
 
-    return parse(configValue!)
+    return parse(configValue)
   }) as EnvType<S>
 
 export default cast

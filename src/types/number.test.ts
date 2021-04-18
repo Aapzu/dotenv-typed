@@ -34,7 +34,7 @@ describe('number module', () => {
       ${'scientific numbers'} | ${['1.203e-123', '1e+123', '10e100', '1E123', '-123e123']}
     `('$label', ({ values }) => {
       it.each(values as string[])(`returns true for %s`, (value) => {
-        expect(validateStringValue(value)).toBe(true)
+        expect(validateStringValue(value, { type: Number })).toBe(true)
       })
     })
 
@@ -47,7 +47,7 @@ describe('number module', () => {
       ${'null and undefined'}    | ${['null', 'undefined']}
     `('$label', ({ values }) => {
       it.each(values as string[])(`returns false for %s`, (value) => {
-        expect(validateStringValue(value)).toBe(false)
+        expect(validateStringValue(value, { type: Number })).toBe(false)
       })
     })
   })
@@ -61,7 +61,7 @@ describe('number module', () => {
       ${'scientific numbers'} | ${[1.203e-123, 1e123, 10e100, 1e123]}
     `('$label', ({ values }) => {
       it.each(values as number[])(`returns true for %s`, (value) => {
-        expect(validateValue(value)).toBe(true)
+        expect(validateValue(value, { type: Number })).toBe(true)
       })
     })
     describe.each`
@@ -70,9 +70,12 @@ describe('number module', () => {
       ${'booleans'}           | ${[true, false]}
       ${'null and undefined'} | ${[null, undefined]}
     `('$label', ({ values }) => {
-      it.each(values as any[])(`returns false for %s`, (value) => {
-        expect(validateValue(value)).toBe(false)
-      })
+      it.each(values as (string | number | null | undefined)[])(
+        `returns false for %s`,
+        (value) => {
+          expect(validateValue(value, { type: Number })).toBe(false)
+        }
+      )
     })
   })
 })

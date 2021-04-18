@@ -9,7 +9,7 @@ const stringArrayModule: TypeModule<Array<StringConstructor>> = {
 
   parse: (value) => value.split(','),
 
-  validateStringValue: (_value) => true,
+  validateStringValue: () => true,
 
   validateValue: (value) =>
     Array.isArray(value) && !value.some((item) => !(typeof item === 'string')),

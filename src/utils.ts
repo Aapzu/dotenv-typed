@@ -23,7 +23,7 @@ export const getItemTypeModule = <T extends ConfigItem>(
 ): TypeModule<NormalizedConfigItem<T>['type']> => {
   const normalizedItem = item && normalizeConfigItem(item)
 
-  for (let typeModule of [
+  for (const typeModule of [
     booleanModule,
     booleanArrayModule,
     enumModule,
