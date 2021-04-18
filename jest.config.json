@@ -3,15 +3,15 @@
     {
       "displayName": "unit",
       "testRegex": ".*(?<!integration)\\.test\\.ts$",
-      "setupFiles": ["<rootDir>/src/mocks.ts"],
+      "setupFiles": ["<rootDir>/test/mocks.ts"],
       "preset": "ts-jest",
-      "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"]
+      "setupFilesAfterEnv": ["<rootDir>/test/setupTests.ts"]
     },
     {
       "displayName": "integration",
       "testRegex": ".*\\.integration\\.test\\.ts$",
       "preset": "ts-jest",
-      "setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"]
+      "setupFilesAfterEnv": ["<rootDir>/test/setupTests.ts"]
     },
     {
       "displayName": "types",
