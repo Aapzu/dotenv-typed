@@ -1,4 +1,4 @@
-import numberArrayModule from './numberArray'
+import numberArrayModule from '../../src/typeModules/numberArray'
 
 const { isOfType, validateStringValue, validateValue } = numberArrayModule
 
