@@ -1,4 +1,4 @@
-import { /*DotenvParseOptions, */ DotenvParseOutput } from 'dotenv'
+import { DotenvParseOutput } from 'dotenv'
 import { BaseEncodingOptions, PathLike } from 'fs'
 
 jest.mock('fs', () => ({
@@ -23,9 +23,7 @@ jest.mock('fs', () => ({
 jest.mock('dotenv', () => ({
   ...jest.requireActual('dotenv'),
   parse: jest.fn(
-    (
-      src: string | Buffer /*, options?: DotenvParseOptions*/
-    ): DotenvParseOutput => {
+    (src: string | Buffer): DotenvParseOutput => {
       return {
         PARSED: src.toString(),
       }
