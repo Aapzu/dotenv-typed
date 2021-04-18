@@ -1,9 +1,9 @@
 {
-  "name": "dotenv-typed",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "@aapzu/tsdotenv",
+  "version": "0.0.1",
+  "description": "Creates and parses a typed dotenv config from a given schema",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -11,11 +11,19 @@
     "eslint:fix": "npm run eslint -- --fix",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
-    "lint": "tsc --noEmit && npm run prettier && npm run eslint"
+    "lint": "tsc --noEmit && npm run prettier && npm run eslint",
+    "prepack": "npm run build"
   },
-  "keywords": [],
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "dotenv",
+    "typescript",
+    "strongly-typed"
+  ],
   "author": "Aapeli Haanpuu",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
     "lodash": "^4.17.21"
