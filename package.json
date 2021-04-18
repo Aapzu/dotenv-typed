@@ -40,7 +40,7 @@
   "tsd": {
     "directory": "test",
     "compilerOptions": {
-      "strict": false
+      "strict": true
     }
   }
 }
