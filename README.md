@@ -2,9 +2,9 @@
 
 Tsdotenv is a package which generates a validated and strongly typed config object from `.env` file (or `process.env` variables).
 
-![Travis (.com)](https://img.shields.io/travis/com/aapzu/tsdotenv?logo=travis&style=flat-square)
+[![Travis (.com)](https://img.shields.io/travis/com/aapzu/tsdotenv?logo=travis&style=flat-square)](https://www.travis-ci.com/github/Aapzu/tsdotenv)
 
-![GitHub](https://img.shields.io/github/license/aapzu/tsdotenv?style=flat-square)
+[![GitHub](https://img.shields.io/github/license/aapzu/tsdotenv?style=flat-square)](https://github.com/Aapzu/tsdotenv/blob/master/LICENSE)
 
 ## Installation
 
