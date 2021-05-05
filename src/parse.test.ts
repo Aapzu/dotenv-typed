@@ -74,7 +74,9 @@ describe('parse', () => {
   })
 
   it('calls cast with the parsed object', () => {
-    parse(TEST_SCHEMA)
+    parse(TEST_SCHEMA, {
+      path: 'foobar',
+    })
     expect(cast).toBeCalledTimes(1)
     expect(cast).toBeCalledWith(
       { ...TEST_SCHEMA, normalized: true },

@@ -13,7 +13,7 @@ const {
   NUMBER_SCIENTIFIC,
   STRING,
   STRING_ARRAY,
-} = parse('foobar', NORMALIZED_TEST_SCHEMA)
+} = parse(NORMALIZED_TEST_SCHEMA)
 
 expectType<boolean[]>(BOOLEAN_ARRAY)
 expectType<boolean>(BOOLEAN_FALSE)
