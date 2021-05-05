@@ -17,7 +17,7 @@ describe('validate', () => {
     expect(() => {
       validate(
         {
-          STRING: NORMALIZED_TEST_SCHEMA.STRING,
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: undefined },
           NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT,
         },
         { NUMBER_INT: TEST_CONFIG.NUMBER_INT }
@@ -29,13 +29,41 @@ describe('validate', () => {
     expect(() => {
       validate(
         {
-          STRING: NORMALIZED_TEST_SCHEMA.STRING,
-          NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT,
-          BOOLEAN_TRUE: NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE,
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: undefined },
+          NUMBER_INT: {
+            ...NORMALIZED_TEST_SCHEMA.NUMBER_INT,
+            default: undefined,
+          },
+          BOOLEAN_TRUE: {
+            ...NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE,
+            default: undefined,
+          },
         },
         { STRING: TEST_CONFIG.NUMBER_INT }
       )
     }).toThrow('Values for NUMBER_INT, BOOLEAN_TRUE missing from config')
+  })
+
+  it("doesn't throw if a key is missing but it's optional", () => {
+    expect(() => {
+      validate(
+        {
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, optional: true },
+        },
+        {}
+      )
+    }).not.toThrow()
+  })
+
+  it("doesn't throw if a key is missing but it has a default value", () => {
+    expect(() => {
+      validate(
+        {
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: 'foobar' },
+        },
+        {}
+      )
+    }).not.toThrow()
   })
 
   it('throws if one key is missing from schema', () => {

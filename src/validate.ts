@@ -11,8 +11,13 @@ const findMissingKeys = (
   schema: NormalizedConfigSchema,
   config: DotenvParseOutput
 ) => {
-  const missingFromConfig = Object.keys(schema).filter(
-    (key) => !(key in config)
+  const missingFromConfig = (Object.keys(
+    schema
+  ) as (keyof typeof schema)[]).filter(
+    (key) =>
+      !(key in config) &&
+      !schema[key]?.optional &&
+      schema[key]?.default === undefined
   )
   const missingFromSchema = Object.keys(config).filter(
     (key) => !(key in schema)
