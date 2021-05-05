@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import fs from 'fs'
+import camelCaseKeys from './casing'
 import cast from './cast'
 import normalize from './normalize'
 import {
@@ -36,6 +37,15 @@ interface ParseOptions {
    * Variable definitions in .env file override process.env definitions
    */
   overrideProcessEnvVariables?: boolean
+  /**
+   * Use .env file also if NODE_ENV=production. `false` by default.
+   */
+  useDotenvInProduction?: boolean
+  /**
+   * Change the casing of the config object keys from snake_case or
+   * SCREAMING_SNAKE_CASE to camelCase
+   */
+  camelCaseKeys?: string
 }
 
 const parse = <S extends ConfigSchema>(
@@ -48,9 +58,11 @@ const parse = <S extends ConfigSchema>(
     encoding = 'utf8',
     debug = false,
     validate: validateOpt = true,
+    useDotenvInProduction = false,
     overrideProcessEnvVariables = false,
+    camelCaseKeys: camelCaseKeysOpt,
   }: ParseOptions = {}
-): EnvType<NormalizedConfigSchema<S>> => {
+): EnvType<NormalizedConfigSchema<S>, typeof camelCaseKeys> => {
   let envFile = ''
   try {
     envFile = fs.readFileSync(path, { encoding })
@@ -63,19 +75,26 @@ const parse = <S extends ConfigSchema>(
     [K in keyof S]: string
   }
   const parsedOutput =
-    process.env['NODE_ENV'] === 'production'
-      ? {}
-      : dotenv.parse(envFile, { debug })
+    process.env['NODE_ENV'] !== 'production' || useDotenvInProduction
+      ? dotenv.parse(envFile, { debug })
+      : {}
 
   const config = overrideProcessEnvVariables
-    ? Object.assign(parsedOutput, processEnvVariables)
-    : Object.assign(processEnvVariables, parsedOutput)
+    ? Object.assign(processEnvVariables, parsedOutput)
+    : Object.assign(parsedOutput, processEnvVariables)
 
   if (validateOpt) {
     validate(normalizedSchema, config)
   }
 
-  return cast(normalizedSchema, config as DotenvOutput<typeof normalizedSchema>)
+  const casted = cast(
+    normalizedSchema,
+    config as DotenvOutput<typeof normalizedSchema>
+  )
+
+  const reCased = camelCaseKeysOpt ? camelCaseKeys(casted) : casted
+
+  return reCased
 }
 
 export default parse
