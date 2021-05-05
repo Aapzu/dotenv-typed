@@ -2,8 +2,8 @@
   "name": "@aapzu/tsdotenv",
   "version": "0.0.1",
   "description": "Creates and parses a typed dotenv config from a given schema",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -14,9 +14,6 @@
     "lint": "tsc --noEmit && npm run prettier && npm run eslint",
     "prepack": "npm run build"
   },
-  "files": [
-    "dist"
-  ],
   "keywords": [
     "dotenv",
     "typescript",
