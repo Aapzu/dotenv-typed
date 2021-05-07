@@ -66,31 +66,6 @@ describe('validate', () => {
     }).not.toThrow()
   })
 
-  it('throws if one key is missing from schema', () => {
-    expect(() => {
-      validate(
-        { NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT },
-        {
-          NUMBER_INT: TEST_CONFIG.NUMBER_INT,
-          NUMBER_FLOAT: TEST_CONFIG.NUMBER_FLOAT,
-        }
-      )
-    }).toThrow('Key NUMBER_FLOAT missing from schema')
-  })
-
-  it('throws if multiple keys are missing from schema', () => {
-    expect(() => {
-      validate(
-        { STRING: NORMALIZED_TEST_SCHEMA.STRING },
-        {
-          STRING: TEST_CONFIG.STRING,
-          NUMBER_INT: TEST_CONFIG.NUMBER_INT,
-          BOOLEAN_TRUE: TEST_CONFIG.BOOLEAN_TRUE,
-        }
-      )
-    }).toThrow('Keys NUMBER_INT, BOOLEAN_TRUE missing from schema')
-  })
-
   it.each(
     Object.keys(
       omit(NORMALIZED_TEST_SCHEMA, 'STRING', 'STRING_ARRAY')

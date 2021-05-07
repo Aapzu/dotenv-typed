@@ -35,6 +35,15 @@ describe('full test', () => {
         STRING_ARRAY: ['foo', 'bar', 'baz'],
       })
     })
+
+    it("doesn't return keys missing from schema", () => {
+      const val = parse({
+        STRING: String,
+      })
+      expect(val).toEqual({
+        STRING: 'foo',
+      })
+    })
   })
 
   describe('prod mode with variables coming from process.env', () => {

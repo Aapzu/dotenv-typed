@@ -68,8 +68,8 @@ const parse = <S extends ConfigSchema>(
       : dotenv.parse(envFile, { debug })
 
   const config = overrideProcessEnvVariables
-    ? Object.assign(parsedOutput, processEnvVariables)
-    : Object.assign(processEnvVariables, parsedOutput)
+    ? { ...parsedOutput, ...processEnvVariables }
+    : { ...processEnvVariables, ...parsedOutput }
 
   if (validateOpt) {
     validate(normalizedSchema, config)

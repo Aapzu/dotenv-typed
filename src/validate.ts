@@ -19,20 +19,10 @@ const findMissingKeys = (
       !schema[key]?.optional &&
       schema[key]?.default === undefined
   )
-  const missingFromSchema = Object.keys(config).filter(
-    (key) => !(key in schema)
-  )
-
   if (missingFromConfig.length) {
     const keys = missingFromConfig.join(', ')
     const possiblePluralS = missingFromConfig.length > 1 ? 's' : ''
     throw new Error(`Value${possiblePluralS} for ${keys} missing from config`)
-  }
-
-  if (missingFromSchema.length) {
-    const keys = missingFromSchema.join(', ')
-    const possiblePluralS = missingFromSchema.length > 1 ? 's' : ''
-    throw new Error(`Key${possiblePluralS} ${keys} missing from schema`)
   }
 }
 
