@@ -1,8 +1,8 @@
 import { DotenvParseOutput } from 'dotenv'
 import { forOwn } from 'lodash'
 import {
+  ConfigItemDefaultValue,
   ConfigItemType,
-  ConfigItemValue,
   NormalizedConfigSchema,
 } from './types'
 import { getItemTypeModule } from './utils'
@@ -30,7 +30,7 @@ const getNotValidErrorMessage = (
 ) => `Value ${value} of key ${key} is not a valid ${typeName}`
 
 const getNotValidDefaultErrorMessage = <
-  T extends ConfigItemValue<ConfigItemType>
+  T extends ConfigItemDefaultValue<ConfigItemType>
 >(
   key: string,
   value: T,
@@ -53,10 +53,12 @@ const validate = <S extends NormalizedConfigSchema>(
       schemaObject
     )
 
+    const type = typeof typeName === 'string' ? typeName : typeName(schema[key])
+
     // If configValue === undefined, we know there must be a default value or optional === true
     if (configValue !== undefined) {
       if (!validateStringValue(configValue, schemaObject)) {
-        throw new Error(getNotValidErrorMessage(key, configValue, typeName))
+        throw new Error(getNotValidErrorMessage(key, configValue, type))
       }
     }
 
@@ -65,7 +67,7 @@ const validate = <S extends NormalizedConfigSchema>(
       !validateValue(schemaObject.default, schemaObject)
     ) {
       throw new Error(
-        getNotValidDefaultErrorMessage(key, schemaObject.default, typeName)
+        getNotValidDefaultErrorMessage(key, schemaObject.default, type)
       )
     }
   })
