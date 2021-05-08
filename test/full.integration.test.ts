@@ -37,9 +37,12 @@ describe('full test', () => {
     })
 
     it("doesn't return keys missing from schema", () => {
-      const val = parse({
-        STRING: String,
-      })
+      const val = parse(
+        {
+          STRING: String,
+        },
+        { path: fileName }
+      )
       expect(val).toEqual({
         STRING: 'foo',
       })

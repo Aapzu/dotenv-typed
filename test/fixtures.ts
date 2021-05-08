@@ -51,6 +51,18 @@ export const TEST_CONFIG: DotenvOutput<typeof NORMALIZED_TEST_SCHEMA> = {
   STRING_ARRAY: 'foo,bar,baz',
 }
 
+export const EMPTY_TEST_CONFIG: DotenvOutput<
+  Pick<
+    typeof NORMALIZED_TEST_SCHEMA,
+    'BOOLEAN_ARRAY' | 'STRING_ARRAY' | 'NUMBER_ARRAY' | 'STRING'
+  >
+> = {
+  BOOLEAN_ARRAY: '',
+  NUMBER_ARRAY: '',
+  STRING: '',
+  STRING_ARRAY: '',
+}
+
 export const INVALID_TEST_CONFIG: DotenvOutput<
   typeof NORMALIZED_TEST_SCHEMA
 > = {

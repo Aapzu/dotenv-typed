@@ -3,8 +3,9 @@ import {
   INVALID_TEST_CONFIG,
   TEST_CONFIG,
   NORMALIZED_TEST_SCHEMA,
+  EMPTY_TEST_CONFIG,
 } from './fixtures'
-import { omit } from 'lodash'
+import { omit, pick } from 'lodash'
 
 describe('validate', () => {
   it("doesn't throw if called with valid schema and config", () => {
@@ -25,25 +26,6 @@ describe('validate', () => {
     }).toThrow('Value for STRING missing from config')
   })
 
-  it('throws if multiple keys are missing from config', () => {
-    expect(() => {
-      validate(
-        {
-          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: undefined },
-          NUMBER_INT: {
-            ...NORMALIZED_TEST_SCHEMA.NUMBER_INT,
-            default: undefined,
-          },
-          BOOLEAN_TRUE: {
-            ...NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE,
-            default: undefined,
-          },
-        },
-        { STRING: TEST_CONFIG.NUMBER_INT }
-      )
-    }).toThrow('Values for NUMBER_INT, BOOLEAN_TRUE missing from config')
-  })
-
   it("doesn't throw if a key is missing but it's optional", () => {
     expect(() => {
       validate(
@@ -62,6 +44,21 @@ describe('validate', () => {
           STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: 'foobar' },
         },
         {}
+      )
+    }).not.toThrow()
+  })
+
+  it('accepts empty values for numbers and arrays', () => {
+    expect(() => {
+      validate(
+        pick(
+          NORMALIZED_TEST_SCHEMA,
+          'BOOLEAN_ARRAY',
+          'STRING_ARRAY',
+          'NUMBER_ARRAY',
+          'STRING'
+        ),
+        EMPTY_TEST_CONFIG
       )
     }).not.toThrow()
   })
