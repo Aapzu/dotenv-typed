@@ -8,14 +8,16 @@ export enum ConfigItemTypeName {
   BooleanArray,
 }
 
+type ArrayType<T> = Array<T> | Readonly<Array<T>>
+
 export type ConfigItemType =
   | StringConstructor
   | NumberConstructor
   | BooleanConstructor
-  | Array<string>
-  | Array<NumberConstructor>
-  | Array<StringConstructor>
-  | Array<BooleanConstructor>
+  | ArrayType<string>
+  | ArrayType<NumberConstructor>
+  | ArrayType<StringConstructor>
+  | ArrayType<BooleanConstructor>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ReturnTypeArg = (...args: any) => any
@@ -26,17 +28,21 @@ export type ConfigItemValue<
     ? Item['type']
     : Item
 > = Type extends ReturnTypeArg
-  ? ReturnType<Type>
-  : Type extends Array<infer U>
+  ? ReturnType<Type> // StringConstructor -> string, BooleanConstructor -> boolean etc
+  : Type extends ArrayType<infer U> // If any array
   ? U extends ReturnTypeArg
-    ? Array<ReturnType<U>>
-    : U
-  : Type
+    ? Array<ReturnType<U>> // Array<StringConstructor> -> string[] etc
+    : U // ['foo', 'bar', 'baz'] -> 'foo' | 'bar' | 'baz'
+  : never
+
+export type ConfigItemDefaultValue<T extends ConfigItemType> =
+  | ConfigItemValue<T>
+  | Readonly<ConfigItemValue<T>>
 
 export type ConfigItemObjectType<T extends ConfigItemType = ConfigItemType> = {
   type: T
   optional?: boolean
-  default?: ConfigItemValue<T>
+  default?: ConfigItemDefaultValue<ConfigItemType>
 }
 
 export type ConfigItem = ConfigItemType | ConfigItemObjectType
@@ -55,15 +61,22 @@ export type NormalizedConfigSchema<S extends ConfigSchema = ConfigSchema> = {
   [K in keyof S]: NormalizedConfigItem<S[K]>
 }
 
+export type ConfigItemValueWithOptionals<T extends ConfigItem> = T extends {
+  optional: true
+  default?: undefined | never
+}
+  ? ConfigItemValue<T> | undefined
+  : ConfigItemValue<T>
+
 export type EnvType<S extends ConfigSchema> = {
-  [K in keyof S]: ConfigItemValue<S[K]>
+  [K in keyof S]: ConfigItemValueWithOptionals<S[K]>
 }
 
 export type DotenvOutput<S extends NormalizedConfigSchema> = {
   [K in keyof S]: string
 }
 
-export interface TypeModule<T extends ConfigItemType> {
+export type TypeModule<T extends ConfigItemType> = {
   isOfType: (
     item: ConfigItemObjectType | undefined
   ) => item is ConfigItemObjectType<T>
@@ -76,5 +89,5 @@ export interface TypeModule<T extends ConfigItemType> {
     value: unknown,
     schemaObject: ConfigItemObjectType<T>
   ) => boolean
-  typeName: string
+  typeName: string | ((schemaObject?: ConfigItemObjectType<T>) => string)
 }
