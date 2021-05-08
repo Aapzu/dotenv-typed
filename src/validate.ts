@@ -7,31 +7,20 @@ import {
 } from './types'
 import { getItemTypeModule } from './utils'
 
-const findMissingKeys = (
-  schema: NormalizedConfigSchema,
-  config: DotenvParseOutput
-) => {
-  const missingFromConfig = (Object.keys(
-    schema
-  ) as (keyof typeof schema)[]).filter(
-    (key) =>
-      !(key in config) &&
-      !schema[key]?.optional &&
-      schema[key]?.default === undefined
-  )
-  if (missingFromConfig.length) {
-    const keys = missingFromConfig.join(', ')
-    const possiblePluralS = missingFromConfig.length > 1 ? 's' : ''
-    throw new Error(`Value${possiblePluralS} for ${keys} missing from config`)
-  }
-}
-
 const isMissingValue = (
   key: string,
   schema: NormalizedConfigSchema,
   config: DotenvParseOutput
 ): boolean => {
-  return !schema['optional'] && !config[key]
+  const schemaObject = schema[key]
+  const configObject = config[key]
+  if (
+    schemaObject &&
+    (schemaObject['optional'] || schemaObject['default'] !== undefined)
+  ) {
+    return false
+  }
+  return configObject === undefined
 }
 
 const getNotValidErrorMessage = (
@@ -53,27 +42,22 @@ const validate = <S extends NormalizedConfigSchema>(
   schema: S,
   config: DotenvParseOutput
 ): void => {
-  findMissingKeys(schema, config)
-
-  forOwn(config, (configValue, key) => {
-    const schemaObject = schema[key]
-
+  forOwn(schema, (schemaObject, key) => {
     if (isMissingValue(key, schema, config)) {
-      throw new Error(`Missing value for key ${key}`)
+      throw new Error(`Value for ${key} missing from config`)
     }
 
-    if (!schemaObject) {
-      throw new Error(
-        `Missing key: ${key} (if this happens, something is seriously wrong)`
-      )
-    }
+    const configValue = config[key]
 
     const { validateStringValue, validateValue, typeName } = getItemTypeModule(
       schemaObject
     )
 
-    if (!validateStringValue(configValue, schemaObject)) {
-      throw new Error(getNotValidErrorMessage(key, configValue, typeName))
+    // If configValue === undefined, we know there must be a default value or optional === true
+    if (configValue !== undefined) {
+      if (!validateStringValue(configValue, schemaObject)) {
+        throw new Error(getNotValidErrorMessage(key, configValue, typeName))
+      }
     }
 
     if (

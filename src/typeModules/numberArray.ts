@@ -2,7 +2,7 @@ import { ConfigItemObjectType, TypeModule } from '../types'
 import { baseNumberRegex } from './number'
 
 const numberArrayRegex = RegExp(
-  `^(${baseNumberRegex.source}(,${baseNumberRegex.source})*)?$`
+  `^((${baseNumberRegex.source}(,${baseNumberRegex.source})*)?)?$`
 )
 
 const stringModule: TypeModule<Array<NumberConstructor>> = {

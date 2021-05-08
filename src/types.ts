@@ -64,7 +64,9 @@ export type DotenvOutput<S extends NormalizedConfigSchema> = {
 }
 
 export interface TypeModule<T extends ConfigItemType> {
-  isOfType: (item: ConfigItemObjectType | undefined) => boolean
+  isOfType: (
+    item: ConfigItemObjectType | undefined
+  ) => item is ConfigItemObjectType<T>
   parse: (value: string) => ConfigItemValue<T>
   validateStringValue: (
     value: string,
