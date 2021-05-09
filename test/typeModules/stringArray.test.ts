@@ -1,6 +1,11 @@
 import stringArrayModule from '../../src/typeModules/stringArray'
 
-const { isOfType, validateStringValue, validateValue } = stringArrayModule
+const {
+  isOfType,
+  validateStringValue,
+  validateValue,
+  parse,
+} = stringArrayModule
 
 const StringArray = Array(String)
 
@@ -9,14 +14,17 @@ describe('stringArray module', () => {
     it('returns true for correct StringArray type ', () => {
       expect(isOfType({ type: StringArray })).toBe(true)
     })
+
     it('returns true for correct StringArray type with default value', () => {
       expect(isOfType({ type: StringArray, default: ['foo', 'bar'] })).toBe(
         true
       )
     })
+
     it('returns true for correct StringArray type with optional: true', () => {
       expect(isOfType({ type: StringArray, optional: true })).toBe(true)
     })
+
     it.each`
       label                   | value
       ${'undefined'}          | ${undefined}
@@ -62,6 +70,20 @@ describe('stringArray module', () => {
       ${'number array'} | ${[1, 2, 3]}
     `('returns false for $label', ({ value }) => {
       expect(validateValue(value, { type: Array(String) })).toBe(false)
+    })
+  })
+
+  describe('parse', () => {
+    it('parses a list properly', () => {
+      expect(parse('foo,bar,baz')).toEqual(['foo', 'bar', 'baz'])
+    })
+
+    it('parses a list with empty values properly', () => {
+      expect(parse(',foo,,')).toEqual(['', 'foo', '', ''])
+    })
+
+    it('parses an empty list properly', () => {
+      expect(parse('')).toEqual([])
     })
   })
 })

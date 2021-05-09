@@ -12,7 +12,7 @@ const stringModule: TypeModule<Array<NumberConstructor>> = {
     item.type.length === 1 &&
     item.type[0] === Number,
 
-  parse: (value) => value.split(',').map(parseFloat),
+  parse: (value) => (value ? value.split(',').map(parseFloat) : []),
 
   validateStringValue: (value) => numberArrayRegex.test(value),
 

@@ -1,6 +1,11 @@
 import numberArrayModule from '../../src/typeModules/numberArray'
 
-const { isOfType, validateStringValue, validateValue } = numberArrayModule
+const {
+  isOfType,
+  validateStringValue,
+  validateValue,
+  parse,
+} = numberArrayModule
 
 const NumberArray = Array(Number)
 
@@ -71,6 +76,22 @@ describe('numberArray module', () => {
       ${'undefined'} | ${undefined}
     `('returns false for $label', ({ value }) => {
       expect(validateValue(value, { type: Array(Number) })).toBe(false)
+    })
+  })
+
+  describe('parse', () => {
+    it('parses a list properly', () => {
+      expect(parse('6,1.23,1.6e6,NaN,Infinity')).toEqual([
+        6,
+        1.23,
+        1.6e6,
+        NaN,
+        Infinity,
+      ])
+    })
+
+    it('parses an empty list properly', () => {
+      expect(parse('')).toEqual([])
     })
   })
 })
