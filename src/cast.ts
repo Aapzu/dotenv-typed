@@ -10,7 +10,7 @@ const cast = <S extends NormalizedConfigSchema>(
   mapValues(schema, (schemaValue, key) => {
     const configValue = config[key]
 
-    if (configValue === undefined || configValue === '') {
+    if (configValue === undefined) {
       if (schemaValue.default !== undefined) {
         return schemaValue.default
       }

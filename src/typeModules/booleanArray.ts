@@ -10,7 +10,9 @@ const booleanArrayModule: TypeModule<Array<BooleanConstructor>> = {
     item.type[0] === Boolean,
 
   parse: (value) =>
-    value.split(',').map((value) => value.toLowerCase() === 'true'),
+    value
+      ? value.split(',').map((value) => value.toLowerCase() === 'true')
+      : [],
 
   validateStringValue: (value) => booleanArrayRegex.test(value),
 

@@ -80,8 +80,8 @@ const parse = <S extends ConfigSchema>(
       : {}
 
   const config = overrideProcessEnvVariables
-    ? Object.assign(processEnvVariables, parsedOutput)
-    : Object.assign(parsedOutput, processEnvVariables)
+    ? { ...parsedOutput, ...processEnvVariables }
+    : { ...processEnvVariables, ...parsedOutput }
 
   if (validateOpt) {
     validate(normalizedSchema, config)

@@ -1,6 +1,6 @@
 {
   "name": "@aapzu/tsdotenv",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "Creates and parses a typed dotenv config from a given schema",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -15,18 +15,57 @@ const {
   STRING_ARRAY,
 } = normalize(NORMALIZED_TEST_SCHEMA)
 
-expectType<{ type: BooleanConstructor; default: boolean }>(BOOLEAN_TRUE)
-expectType<{ type: BooleanConstructor; default: boolean }>(BOOLEAN_FALSE)
+type BooleanTrueSchema = {
+  readonly type: BooleanConstructor
+  readonly default: true
+}
+type BooleanFalseSchema = {
+  readonly type: BooleanConstructor
+  readonly default: false
+}
+type NumberIntSchema = {
+  readonly type: NumberConstructor
+  readonly default: 9
+}
+type NumberFloatSchema = {
+  readonly type: NumberConstructor
+  readonly default: 0.2
+}
+type NumberScientificSchema = {
+  readonly type: NumberConstructor
+  readonly default: 90000
+}
+type EnumSchema = {
+  readonly type: readonly ['foo', 'bar']
+  readonly default: 'bar'
+}
+type NumberArraySchema = {
+  readonly type: Array<NumberConstructor>
+  readonly default: readonly [1, 2, 3]
+}
+type StringArraySchema = {
+  readonly type: Array<StringConstructor>
+  readonly default: readonly ['foo', 'bar', 'baz']
+}
+type BooleanArraySchema = {
+  readonly type: Array<BooleanConstructor>
+  readonly default: readonly [true, false]
+}
+type StringSchema = {
+  readonly type: StringConstructor
+  readonly default: 'foo'
+}
 
-expectType<{ type: NumberConstructor; default: number }>(NUMBER_INT)
-expectType<{ type: NumberConstructor; default: number }>(NUMBER_FLOAT)
-expectType<{ type: NumberConstructor; default: number }>(NUMBER_SCIENTIFIC)
+expectType<BooleanTrueSchema>(BOOLEAN_TRUE)
+expectType<BooleanFalseSchema>(BOOLEAN_FALSE)
 
-expectType<{ type: string[]; default: string }>(ENUM)
-expectType<{ type: Array<NumberConstructor>; default: number[] }>(NUMBER_ARRAY)
-expectType<{ type: Array<StringConstructor>; default: string[] }>(STRING_ARRAY)
-expectType<{ type: Array<BooleanConstructor>; default: boolean[] }>(
-  BOOLEAN_ARRAY
-)
+expectType<NumberIntSchema>(NUMBER_INT)
+expectType<NumberFloatSchema>(NUMBER_FLOAT)
+expectType<NumberScientificSchema>(NUMBER_SCIENTIFIC)
 
-expectType<{ type: StringConstructor; default: string }>(STRING)
+expectType<EnumSchema>(ENUM)
+expectType<NumberArraySchema>(NUMBER_ARRAY)
+expectType<StringArraySchema>(STRING_ARRAY)
+expectType<BooleanArraySchema>(BOOLEAN_ARRAY)
+
+expectType<StringSchema>(STRING)
