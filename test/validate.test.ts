@@ -3,8 +3,9 @@ import {
   INVALID_TEST_CONFIG,
   TEST_CONFIG,
   NORMALIZED_TEST_SCHEMA,
+  EMPTY_TEST_CONFIG,
 } from './fixtures'
-import { omit } from 'lodash'
+import { omit, pick } from 'lodash'
 
 describe('validate', () => {
   it("doesn't throw if called with valid schema and config", () => {
@@ -17,7 +18,7 @@ describe('validate', () => {
     expect(() => {
       validate(
         {
-          STRING: NORMALIZED_TEST_SCHEMA.STRING,
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: undefined },
           NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT,
         },
         { NUMBER_INT: TEST_CONFIG.NUMBER_INT }
@@ -25,42 +26,41 @@ describe('validate', () => {
     }).toThrow('Value for STRING missing from config')
   })
 
-  it('throws if multiple keys are missing from config', () => {
+  it("doesn't throw if a key is missing but it's optional", () => {
     expect(() => {
       validate(
         {
-          STRING: NORMALIZED_TEST_SCHEMA.STRING,
-          NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT,
-          BOOLEAN_TRUE: NORMALIZED_TEST_SCHEMA.BOOLEAN_TRUE,
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, optional: true },
         },
-        { STRING: TEST_CONFIG.NUMBER_INT }
+        {}
       )
-    }).toThrow('Values for NUMBER_INT, BOOLEAN_TRUE missing from config')
+    }).not.toThrow()
   })
 
-  it('throws if one key is missing from schema', () => {
+  it("doesn't throw if a key is missing but it has a default value", () => {
     expect(() => {
       validate(
-        { NUMBER_INT: NORMALIZED_TEST_SCHEMA.NUMBER_INT },
         {
-          NUMBER_INT: TEST_CONFIG.NUMBER_INT,
-          NUMBER_FLOAT: TEST_CONFIG.NUMBER_FLOAT,
-        }
+          STRING: { ...NORMALIZED_TEST_SCHEMA.STRING, default: 'foobar' },
+        },
+        {}
       )
-    }).toThrow('Key NUMBER_FLOAT missing from schema')
+    }).not.toThrow()
   })
 
-  it('throws if multiple keys are missing from schema', () => {
+  it('accepts empty values for numbers and arrays', () => {
     expect(() => {
       validate(
-        { STRING: NORMALIZED_TEST_SCHEMA.STRING },
-        {
-          STRING: TEST_CONFIG.STRING,
-          NUMBER_INT: TEST_CONFIG.NUMBER_INT,
-          BOOLEAN_TRUE: TEST_CONFIG.BOOLEAN_TRUE,
-        }
+        pick(
+          NORMALIZED_TEST_SCHEMA,
+          'BOOLEAN_ARRAY',
+          'STRING_ARRAY',
+          'NUMBER_ARRAY',
+          'STRING'
+        ),
+        EMPTY_TEST_CONFIG
       )
-    }).toThrow('Keys NUMBER_INT, BOOLEAN_TRUE missing from schema')
+    }).not.toThrow()
   })
 
   it.each(

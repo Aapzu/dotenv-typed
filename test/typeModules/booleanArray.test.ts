@@ -1,6 +1,11 @@
 import booleanArrayModule from '../../src/typeModules/booleanArray'
 
-const { isOfType, validateStringValue, validateValue } = booleanArrayModule
+const {
+  isOfType,
+  validateStringValue,
+  validateValue,
+  parse,
+} = booleanArrayModule
 
 const BooleanArray = Array(Boolean)
 
@@ -72,6 +77,16 @@ describe('booleanArray module', () => {
       ${'undefined'}    | ${undefined}
     `('returns false for $label', ({ value }) => {
       expect(validateValue(value, { type: Array(Boolean) })).toBe(false)
+    })
+  })
+
+  describe('parse', () => {
+    it('parses a list properly', () => {
+      expect(parse('false,false,true')).toEqual([false, false, true])
+    })
+
+    it('parses an empty list properly', () => {
+      expect(parse('')).toEqual([])
     })
   })
 })

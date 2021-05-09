@@ -17,7 +17,7 @@ const enumModule: TypeModule<Array<string>> = {
   validateValue: (value, schema) =>
     typeof value === 'string' && schema.type.includes(value),
 
-  typeName: 'enum',
+  typeName: (schema) => (schema ? `enum ${schema.type.join(' | ')}` : 'enum'),
 }
 
 export default enumModule

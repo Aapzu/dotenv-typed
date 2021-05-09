@@ -7,7 +7,7 @@ const stringArrayModule: TypeModule<Array<StringConstructor>> = {
     item.type.length === 1 &&
     item.type[0] === String,
 
-  parse: (value) => value.split(','),
+  parse: (value) => (value ? value.split(',') : []),
 
   validateStringValue: () => true,
 

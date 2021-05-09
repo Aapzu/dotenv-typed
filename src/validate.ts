@@ -1,42 +1,26 @@
 import { DotenvParseOutput } from 'dotenv'
 import { forOwn } from 'lodash'
 import {
+  ConfigItemDefaultValue,
   ConfigItemType,
-  ConfigItemValue,
   NormalizedConfigSchema,
 } from './types'
 import { getItemTypeModule } from './utils'
-
-const findMissingKeys = (
-  schema: NormalizedConfigSchema,
-  config: DotenvParseOutput
-) => {
-  const missingFromConfig = Object.keys(schema).filter(
-    (key) => !(key in config)
-  )
-  const missingFromSchema = Object.keys(config).filter(
-    (key) => !(key in schema)
-  )
-
-  if (missingFromConfig.length) {
-    const keys = missingFromConfig.join(', ')
-    const possiblePluralS = missingFromConfig.length > 1 ? 's' : ''
-    throw new Error(`Value${possiblePluralS} for ${keys} missing from config`)
-  }
-
-  if (missingFromSchema.length) {
-    const keys = missingFromSchema.join(', ')
-    const possiblePluralS = missingFromSchema.length > 1 ? 's' : ''
-    throw new Error(`Key${possiblePluralS} ${keys} missing from schema`)
-  }
-}
 
 const isMissingValue = (
   key: string,
   schema: NormalizedConfigSchema,
   config: DotenvParseOutput
 ): boolean => {
-  return !schema['optional'] && !config[key]
+  const schemaObject = schema[key]
+  const configObject = config[key]
+  if (
+    schemaObject &&
+    (schemaObject['optional'] || schemaObject['default'] !== undefined)
+  ) {
+    return false
+  }
+  return configObject === undefined
 }
 
 const getNotValidErrorMessage = (
@@ -46,7 +30,7 @@ const getNotValidErrorMessage = (
 ) => `Value ${value} of key ${key} is not a valid ${typeName}`
 
 const getNotValidDefaultErrorMessage = <
-  T extends ConfigItemValue<ConfigItemType>
+  T extends ConfigItemDefaultValue<ConfigItemType>
 >(
   key: string,
   value: T,
@@ -58,27 +42,24 @@ const validate = <S extends NormalizedConfigSchema>(
   schema: S,
   config: DotenvParseOutput
 ): void => {
-  findMissingKeys(schema, config)
-
-  forOwn(config, (configValue, key) => {
-    const schemaObject = schema[key]
-
+  forOwn(schema, (schemaObject, key) => {
     if (isMissingValue(key, schema, config)) {
-      throw new Error(`Missing value for key ${key}`)
+      throw new Error(`Value for ${key} missing from config`)
     }
 
-    if (!schemaObject) {
-      throw new Error(
-        `Missing key: ${key} (if this happens, something is seriously wrong)`
-      )
-    }
+    const configValue = config[key]
 
     const { validateStringValue, validateValue, typeName } = getItemTypeModule(
       schemaObject
     )
 
-    if (!validateStringValue(configValue, schemaObject)) {
-      throw new Error(getNotValidErrorMessage(key, configValue, typeName))
+    const type = typeof typeName === 'string' ? typeName : typeName(schema[key])
+
+    // If configValue === undefined, we know there must be a default value or optional === true
+    if (configValue !== undefined) {
+      if (!validateStringValue(configValue, schemaObject)) {
+        throw new Error(getNotValidErrorMessage(key, configValue, type))
+      }
     }
 
     if (
@@ -86,7 +67,7 @@ const validate = <S extends NormalizedConfigSchema>(
       !validateValue(schemaObject.default, schemaObject)
     ) {
       throw new Error(
-        getNotValidDefaultErrorMessage(key, schemaObject.default, typeName)
+        getNotValidDefaultErrorMessage(key, schemaObject.default, type)
       )
     }
   })

@@ -2,9 +2,7 @@
 
 Tsdotenv is a package which generates a validated and strongly typed config object from `.env` file (or `process.env` variables).
 
-[![Travis (.com)](https://img.shields.io/travis/com/aapzu/tsdotenv?logo=travis&style=flat-square)](https://www.travis-ci.com/github/Aapzu/tsdotenv)
-
-[![GitHub](https://img.shields.io/github/license/aapzu/tsdotenv?style=flat-square)](https://github.com/Aapzu/tsdotenv/blob/master/LICENSE)
+[![Travis (.com)](https://img.shields.io/travis/com/aapzu/tsdotenv?logo=travis&style=flat-square)](https://www.travis-ci.com/github/Aapzu/tsdotenv) [![GitHub](https://img.shields.io/github/license/aapzu/tsdotenv?style=flat-square)](https://github.com/Aapzu/tsdotenv/blob/master/LICENSE)
 
 ## Installation
 
@@ -31,17 +29,27 @@ Create a config file as a single place of truth for the environment variables
 ```typescript
 import { parse } from '@aapzu/tsdotenv'
 
-const config = parse(
-  {
-    DB_HOST: String,
-    DB_PORT: Number,
-    DEBUG: Boolean,
-  },
-  {
-    path: 'path_to_dotenv_file',
-  }
-)
+const SCHEMA = {
+  DB_HOST: String,
+  DB_PORT: { type: Number, default: 3000 },
+  DEBUG: { type: Boolean, optional: true },
+  CUSTOM_ENV: { type: ['test', 'prod'] },
+  // enums and optionals only get typed properly if the
+  // schema is a readonly object
+} as const
 
+const config = parse(SCHEMA, {
+  path: 'path_to_dotenv_file',
+})
+
+/*
+  typeof config = {
+    DB_HOST: string,
+    DB_PORT: number,
+    DEBUG: boolean | undefined
+    CUSTOM_ENV: 'test' | 'prod'
+  }
+ */
 export default config
 ```
 
