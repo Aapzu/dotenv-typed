@@ -72,7 +72,9 @@ export type EnvType<S extends ConfigSchema> = {
   [K in keyof S]: ConfigItemValueWithOptionals<S[K]>
 }
 
-export type DotenvOutput<S extends NormalizedConfigSchema> = {
+export type DotenvOutput<
+  S extends NormalizedConfigSchema = NormalizedConfigSchema
+> = {
   [K in keyof S]: string
 }
 

@@ -75,7 +75,12 @@ const parse = <S extends ConfigSchema>(
     validate(normalizedSchema, config)
   }
 
-  return cast(normalizedSchema, config as DotenvOutput<typeof normalizedSchema>)
+  const casted = cast(
+    normalizedSchema,
+    config as DotenvOutput<typeof normalizedSchema>
+  )
+
+  return casted
 }
 
 export default parse
