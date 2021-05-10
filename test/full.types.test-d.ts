@@ -32,3 +32,17 @@ expectType<number | undefined>(optConfig.NUMBER_INT)
 expectType<number | undefined>(optConfig.NUMBER_SCIENTIFIC)
 expectType<string | undefined>(optConfig.STRING)
 expectType<string[] | undefined>(optConfig.STRING_ARRAY)
+
+// Test config parsing with cameL case keys
+const camelCaseConfig = parse(NORMALIZED_TEST_SCHEMA_WITH_OPTIONALS, true)
+
+expectType<boolean[] | undefined>(camelCaseConfig.booleanArray)
+expectType<boolean | undefined>(camelCaseConfig.booleanFalse)
+expectType<boolean | undefined>(camelCaseConfig.booleanTrue)
+expectType<'foo' | 'bar' | undefined>(camelCaseConfig.enum)
+expectType<number[] | undefined>(camelCaseConfig.numberArray)
+expectType<number | undefined>(camelCaseConfig.numberFloat)
+expectType<number | undefined>(camelCaseConfig.numberInt)
+expectType<number | undefined>(camelCaseConfig.numberScientific)
+expectType<string | undefined>(camelCaseConfig.string)
+expectType<string[] | undefined>(camelCaseConfig.stringArray)
