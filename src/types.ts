@@ -68,9 +68,27 @@ export type ConfigItemValueWithOptionals<T extends ConfigItem> = T extends {
   ? ConfigItemValue<T> | undefined
   : ConfigItemValue<T>
 
-export type EnvType<S extends ConfigSchema> = {
+type CamelCase<
+  S extends string
+> = S extends `${infer P1}_${infer P2}${infer P3}`
+  ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
+  : Lowercase<S>
+
+type KeysToCamelCase<T> = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  [K in keyof T as CamelCase<string & K>]: T[K] extends Record<string, unknown>
+    ? KeysToCamelCase<T[K]>
+    : T[K]
+}
+
+type EnvObjectType<S extends ConfigSchema | KeysToCamelCase<ConfigSchema>> = {
   [K in keyof S]: ConfigItemValueWithOptionals<S[K]>
 }
+
+export type EnvType<
+  S extends ConfigSchema,
+  CamelCaseKeys extends boolean = false
+> = EnvObjectType<CamelCaseKeys extends true ? KeysToCamelCase<S> : S>
 
 export type DotenvOutput<
   S extends NormalizedConfigSchema = NormalizedConfigSchema
