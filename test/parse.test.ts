@@ -35,6 +35,7 @@ const TEST_SCHEMA = {
 describe('parse', () => {
   afterEach(() => {
     jest.clearAllMocks()
+    delete process.env['FOO']
   })
 
   describe('file reading', () => {
@@ -64,7 +65,9 @@ describe('parse', () => {
         path: 'foobar',
       })
       expect(dotenv.parse).toBeCalledTimes(1)
-      expect(dotenv.parse).toBeCalledWith('foobar readFileSync')
+      expect(dotenv.parse).toBeCalledWith('foobar readFileSync', {
+        debug: false,
+      })
     })
 
     it('passed debug option to dotenv.parse', () => {
@@ -86,7 +89,9 @@ describe('parse', () => {
         useDotenvInProduction: true,
       })
       expect(dotenv.parse).toBeCalledTimes(1)
-      expect(dotenv.parse).toBeCalledWith('foobar readFileSync')
+      expect(dotenv.parse).toBeCalledWith('foobar readFileSync', {
+        debug: false,
+      })
       process.env['NODE_ENV'] = oldNodeEnv
     })
 
@@ -102,26 +107,23 @@ describe('parse', () => {
   })
 
   describe('prioritization', () => {
-    it('prioritizes process.env variables if overrideProcessEnvVariables by default', () => {
-      const oldVal = process.env['FOO']
-      process.env['FOO'] = 'bar'
+    it('prioritizes process.env variables by default', () => {
+      process.env['FOO'] = 'fromProcessEnv'
       jest.spyOn(dotenv, 'parse').mockReturnValueOnce({
-        FOO: 'baz',
+        FOO: 'fromDotEnv',
       })
       parse({
         FOO: String,
       })
       expect(cast).toBeCalledWith(expect.objectContaining({ FOO: String }), {
-        FOO: 'bar',
+        FOO: 'fromProcessEnv',
       })
-      process.env['FOO'] = oldVal
     })
 
     it('prioritizes process.env variables if overrideProcessEnvVariables is false', () => {
-      const oldVal = process.env['FOO']
-      process.env['FOO'] = 'bar'
+      process.env['FOO'] = 'fromProcessEnv'
       jest.spyOn(dotenv, 'parse').mockReturnValueOnce({
-        FOO: 'baz',
+        FOO: 'fromDotEnv',
       })
       parse(
         {
@@ -132,16 +134,14 @@ describe('parse', () => {
         }
       )
       expect(cast).toBeCalledWith(expect.objectContaining({ FOO: String }), {
-        FOO: 'bar',
+        FOO: 'fromProcessEnv',
       })
-      process.env['FOO'] = oldVal
     })
 
     it('prioritizes .env variables if overrideProcessEnvVariables is true', () => {
-      const oldVal = process.env['FOO']
-      process.env['FOO'] = 'bar'
+      process.env['FOO'] = 'fromProcessEnv'
       jest.spyOn(dotenv, 'parse').mockReturnValueOnce({
-        FOO: 'baz',
+        FOO: 'fromDotEnv',
       })
       parse(
         {
@@ -152,9 +152,8 @@ describe('parse', () => {
         }
       )
       expect(cast).toBeCalledWith(expect.objectContaining({ FOO: String }), {
-        FOO: 'baz',
+        FOO: 'fromDotEnv',
       })
-      process.env['FOO'] = oldVal
     })
   })
 
