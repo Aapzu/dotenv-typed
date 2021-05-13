@@ -1,12 +1,13 @@
 import dotenv from 'dotenv'
 import fs from 'fs'
-// import camelCaseKeys from './casing'
+import { camelCaseKeys } from './casing'
 import cast from './cast'
 import normalize from './normalize'
 import {
   ConfigSchema,
   DotenvOutput,
   EnvType,
+  KeysToCamelCase,
   NormalizedConfigSchema,
 } from './types'
 import { resolve } from 'path'
@@ -48,28 +49,38 @@ interface ParseOptions {
   camelCaseKeys?: boolean
 }
 
-const parse = <
+function parse<
   S extends ConfigSchema,
-  CamelCaseKeys extends boolean | undefined
+  O extends Readonly<Partial<ParseOptions>>
+>(
+  schema: S,
+  options: O & { camelCaseKeys: true }
+): KeysToCamelCase<EnvType<NormalizedConfigSchema<S>>>
+function parse<
+  S extends ConfigSchema,
+  O extends Readonly<Partial<ParseOptions>>
+>(schema: S, options?: O): EnvType<NormalizedConfigSchema<S>>
+function parse<
+  S extends ConfigSchema,
+  O extends Readonly<Partial<ParseOptions>>
 >(
   /**
    * .env file schema
    */
   schema: S,
-  _camelCaseKeys?: CamelCaseKeys,
-  {
+  options?: O
+):
+  | KeysToCamelCase<EnvType<NormalizedConfigSchema<S>>>
+  | EnvType<NormalizedConfigSchema<S>> {
+  const {
+    camelCaseKeys: camelCaseKeysOpt = false,
     path = resolve(process.cwd(), '.env'),
     encoding = 'utf8',
     debug = false,
     validate: validateOpt = true,
     useDotenvInProduction = false,
     overrideProcessEnvVariables = false,
-  }: // camelCaseKeys: camelCaseKeysOpt = false,
-  Readonly<ParseOptions> = {}
-): EnvType<
-  NormalizedConfigSchema<S>,
-  CamelCaseKeys extends true ? true : false
-> => {
+  } = options || {}
   let envFile = ''
   try {
     envFile = fs.readFileSync(path, { encoding })
@@ -99,10 +110,11 @@ const parse = <
     config as DotenvOutput<typeof normalizedSchema>
   )
 
-  // const reCased = camelCaseKeysOpt ? camelCaseKeys(casted) : casted
-  const reCased = casted
+  if (camelCaseKeysOpt) {
+    return camelCaseKeys(casted)
+  }
 
-  return reCased
+  return casted
 }
 
 export default parse

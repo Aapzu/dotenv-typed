@@ -5,7 +5,8 @@ import cast from '../src/cast'
 import parse from '../src/parse'
 import normalize from '../src/normalize'
 import validate from '../src/validate'
-import { ConfigSchema } from '../src/types'
+import * as casing from '../src/casing'
+import { ConfigSchema, EnvType, NormalizedConfigSchema } from '../src/types'
 
 jest.mock('../src/validate')
 jest.mock('../src/normalize', () =>
@@ -14,7 +15,18 @@ jest.mock('../src/normalize', () =>
     normalized: true,
   }))
 )
-jest.mock('../src/cast')
+jest.mock('../src/cast', () =>
+  jest.fn(
+    (
+      _schema: NormalizedConfigSchema,
+      config: EnvType<NormalizedConfigSchema>
+    ) => ({
+      ...config,
+      casted: true,
+    })
+  )
+)
+jest.spyOn(casing, 'camelCaseKeys')
 
 const TEST_SCHEMA = {
   FOO: String,
@@ -195,6 +207,35 @@ describe('parse', () => {
           PARSED: 'foobar readFileSync',
         }
       )
+    })
+  })
+
+  describe('casing', () => {
+    it('does not call camelCaseKeys by default', () => {
+      parse(TEST_SCHEMA, {
+        path: 'foobar',
+      })
+      expect(casing.camelCaseKeys).not.toBeCalled()
+    })
+
+    it('does not call camelCaseKeys if options.camelCaseKeys = false', () => {
+      parse(TEST_SCHEMA, {
+        path: 'foobar',
+        camelCaseKeys: false,
+      })
+      expect(casing.camelCaseKeys).not.toBeCalled()
+    })
+
+    it('calls camelCaseKeys if options.camelCaseKeys = true', () => {
+      parse(TEST_SCHEMA, {
+        path: 'foobar',
+        camelCaseKeys: true,
+      })
+      expect(casing.camelCaseKeys).toBeCalledTimes(1)
+      expect(casing.camelCaseKeys).toBeCalledWith({
+        PARSED: 'foobar readFileSync',
+        casted: true,
+      })
     })
   })
 })
