@@ -98,8 +98,8 @@ function parse<
       : {}
 
   const config = overrideProcessEnvVariables
-    ? { ...parsedOutput, ...processEnvVariables }
-    : { ...processEnvVariables, ...parsedOutput }
+    ? { ...processEnvVariables, ...parsedOutput }
+    : { ...parsedOutput, ...processEnvVariables }
 
   if (validateOpt) {
     validate(normalizedSchema, config)
