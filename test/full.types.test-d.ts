@@ -34,7 +34,9 @@ expectType<string | undefined>(optConfig.STRING)
 expectType<string[] | undefined>(optConfig.STRING_ARRAY)
 
 // Test config parsing with cameL case keys
-const camelCaseConfig = parse(NORMALIZED_TEST_SCHEMA_WITH_OPTIONALS, true)
+const camelCaseConfig = parse(NORMALIZED_TEST_SCHEMA_WITH_OPTIONALS, {
+  camelCaseKeys: true,
+})
 
 expectType<boolean[] | undefined>(camelCaseConfig.booleanArray)
 expectType<boolean | undefined>(camelCaseConfig.booleanFalse)

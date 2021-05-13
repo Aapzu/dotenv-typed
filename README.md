@@ -109,7 +109,7 @@ const schema = {
 
 ### Options
 
-#### Path
+#### path
 
 Default: `path.resolve(process.cwd(), '.env')`
 
@@ -119,7 +119,33 @@ You may specify a custom path if your file containing environment variables is l
 parse(schema, { path: '/custom/path/to/.env' })
 ```
 
-#### Encoding
+#### camelCaseKeys
+
+Default: `false`
+
+Maps the keys of the config object into camelCase. Example:
+
+```
+import { parse } from '@aapzu/tsdotenv'
+
+const config = parse({
+  DB_HOST: String,
+  DB_PORT: { type: Number, default: 3000 },
+}, {
+  path: 'path_to_dotenv_file',
+  camelCaseKeys: true
+})
+
+/*
+  typeof config = {
+    dbHost: string,
+    dbPort: number,
+  }
+ */
+export default config
+```
+
+#### encoding
 
 Default: `utf8`
 
@@ -129,7 +155,7 @@ You may specify the encoding of your file containing environment variables.
 parse(schema, { encoding: 'latin1' })
 ```
 
-#### Debug
+#### debug
 
 Default: `false`
 

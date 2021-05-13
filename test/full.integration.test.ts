@@ -49,6 +49,25 @@ describe('full test', () => {
       })
     })
 
+    it('parses the config from .env file to correct format with camelCase keys', () => {
+      const config = parse(NORMALIZED_TEST_SCHEMA, {
+        path: fileName,
+        camelCaseKeys: true,
+      })
+      expect(config).toEqual({
+        string: 'foo',
+        numberInt: 1234,
+        numberFloat: 41.1337,
+        numberScientific: 6.0221409e23,
+        booleanTrue: true,
+        booleanFalse: false,
+        booleanArray: [true, false],
+        enum: 'foo',
+        numberArray: [1, 2, 3, 4],
+        stringArray: ['foo', 'bar', 'baz'],
+      })
+    })
+
     it("doesn't return keys missing from schema", () => {
       const val = parse(
         {
@@ -93,6 +112,22 @@ describe('full test', () => {
         ENUM: 'foo',
         NUMBER_ARRAY: [1, 2, 3, 4],
         STRING_ARRAY: ['foo', 'bar', 'baz'],
+      })
+    })
+
+    it('parses the config from .env file to correct format with camelCase keys', () => {
+      const config = parse(NORMALIZED_TEST_SCHEMA, { camelCaseKeys: true })
+      expect(config).toEqual({
+        string: 'foo',
+        numberInt: 1234,
+        numberFloat: 41.1337,
+        numberScientific: 6.0221409e23,
+        booleanTrue: true,
+        booleanFalse: false,
+        booleanArray: [true, false],
+        enum: 'foo',
+        numberArray: [1, 2, 3, 4],
+        stringArray: ['foo', 'bar', 'baz'],
       })
     })
   })
