@@ -8,21 +8,6 @@ export enum ConfigItemTypeName {
   BooleanArray,
 }
 
-export type CamelCase<S extends string | number | symbol> = S extends string
-  ? S extends `${infer P1}_${infer P2}${infer P3}`
-    ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
-    : Lowercase<S>
-  : S
-
-export type KeysToCamelCase<T extends Record<string, unknown>> = {
-  [K in keyof T as CamelCase<K>]: T[K] extends Record<
-    string | number | symbol,
-    unknown
-  >
-    ? KeysToCamelCase<T[K]>
-    : T[K]
-}
-
 type ArrayType<T> = Array<T> | Readonly<Array<T>>
 
 export type ConfigItemType =
@@ -83,9 +68,31 @@ export type ConfigItemValueWithOptionals<T extends ConfigItem> = T extends {
   ? ConfigItemValue<T> | undefined
   : ConfigItemValue<T>
 
-export type EnvType<S extends ConfigSchema> = {
+export type CamelCase<S extends string | number | symbol> = S extends string
+  ? S extends `${infer P1}_${infer P2}${infer P3}`
+    ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
+    : Lowercase<S>
+  : S
+
+export type KeysToCamelCase<T extends Record<string, unknown>> = {
+  [K in keyof T as CamelCase<K>]: T[K] extends Record<
+    string | number | symbol,
+    unknown
+  >
+    ? KeysToCamelCase<T[K]>
+    : T[K]
+}
+
+type EnvObjectType<S extends ConfigSchema> = {
   [K in keyof S]: ConfigItemValueWithOptionals<S[K]>
 }
+
+export type EnvType<
+  S extends ConfigSchema,
+  CamelCaseKeys extends boolean = false
+> = CamelCaseKeys extends true
+  ? KeysToCamelCase<EnvObjectType<S>>
+  : EnvObjectType<S>
 
 export type DotenvOutput<
   S extends NormalizedConfigSchema = NormalizedConfigSchema

@@ -1,11 +1,13 @@
 import dotenv from 'dotenv'
 import fs from 'fs'
+import { camelCaseKeys } from './casing'
 import cast from './cast'
 import normalize from './normalize'
 import {
   ConfigSchema,
   DotenvOutput,
   EnvType,
+  KeysToCamelCase,
   NormalizedConfigSchema,
 } from './types'
 import { resolve } from 'path'
@@ -36,21 +38,49 @@ interface ParseOptions {
    * Variable definitions in .env file override process.env definitions
    */
   overrideProcessEnvVariables?: boolean
+  /**
+   * Use .env file also if NODE_ENV=production. `false` by default.
+   */
+  useDotenvInProduction?: boolean
+  /**
+   * Change the casing of the config object keys from snake_case or
+   * SCREAMING_SNAKE_CASE to camelCase
+   */
+  camelCaseKeys?: boolean
 }
 
-const parse = <S extends ConfigSchema>(
+function parse<
+  S extends ConfigSchema,
+  O extends Readonly<Partial<ParseOptions>>
+>(
+  schema: S,
+  options: O & { camelCaseKeys: true }
+): KeysToCamelCase<EnvType<NormalizedConfigSchema<S>>>
+function parse<
+  S extends ConfigSchema,
+  O extends Readonly<Partial<ParseOptions>>
+>(schema: S, options?: O): EnvType<NormalizedConfigSchema<S>>
+function parse<
+  S extends ConfigSchema,
+  O extends Readonly<Partial<ParseOptions>>
+>(
   /**
    * .env file schema
    */
   schema: S,
-  {
+  options?: O
+):
+  | KeysToCamelCase<EnvType<NormalizedConfigSchema<S>>>
+  | EnvType<NormalizedConfigSchema<S>> {
+  const {
+    camelCaseKeys: camelCaseKeysOpt = false,
     path = resolve(process.cwd(), '.env'),
     encoding = 'utf8',
     debug = false,
     validate: validateOpt = true,
+    useDotenvInProduction = false,
     overrideProcessEnvVariables = false,
-  }: ParseOptions = {}
-): EnvType<NormalizedConfigSchema<S>> => {
+  } = options || {}
   let envFile = ''
   try {
     envFile = fs.readFileSync(path, { encoding })
@@ -63,13 +93,13 @@ const parse = <S extends ConfigSchema>(
     [K in keyof S]: string
   }
   const parsedOutput =
-    process.env['NODE_ENV'] === 'production'
-      ? {}
-      : dotenv.parse(envFile, { debug })
+    process.env['NODE_ENV'] !== 'production' || useDotenvInProduction
+      ? dotenv.parse(envFile, { debug })
+      : {}
 
   const config = overrideProcessEnvVariables
-    ? { ...parsedOutput, ...processEnvVariables }
-    : { ...processEnvVariables, ...parsedOutput }
+    ? { ...processEnvVariables, ...parsedOutput }
+    : { ...parsedOutput, ...processEnvVariables }
 
   if (validateOpt) {
     validate(normalizedSchema, config)
@@ -79,6 +109,10 @@ const parse = <S extends ConfigSchema>(
     normalizedSchema,
     config as DotenvOutput<typeof normalizedSchema>
   )
+
+  if (camelCaseKeysOpt) {
+    return camelCaseKeys(casted)
+  }
 
   return casted
 }
