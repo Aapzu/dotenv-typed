@@ -95,7 +95,9 @@ describe('full test', () => {
     afterAll(() => {
       process.env['NODE_ENV'] = originalProcessEnv['NODE_ENV']
       forOwn(TEST_CONFIG, (_value, key) => {
-        process.env[key] = originalProcessEnv[key]
+        if (typeof originalProcessEnv[key] !== 'undefined') {
+          process.env[key] = originalProcessEnv[key]
+        }
       })
     })
 
