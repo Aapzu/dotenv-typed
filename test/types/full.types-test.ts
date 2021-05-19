@@ -36,3 +36,37 @@ expectType<TypeEqual<number | undefined, typeof optConfig.NUMBER_SCIENTIFIC>>(
 )
 expectType<TypeEqual<string | undefined, typeof optConfig.STRING>>(true)
 expectType<TypeEqual<string[] | undefined, typeof optConfig.STRING_ARRAY>>(true)
+
+// Test config parsing with cameL case keys
+const camelCaseConfig = parse(NORMALIZED_TEST_SCHEMA_WITH_OPTIONALS, {
+  camelCaseKeys: true,
+})
+
+expectType<
+  TypeEqual<boolean[] | undefined, typeof camelCaseConfig.booleanArray>
+>(true)
+expectType<TypeEqual<boolean | undefined, typeof camelCaseConfig.booleanFalse>>(
+  true
+)
+expectType<TypeEqual<boolean | undefined, typeof camelCaseConfig.booleanTrue>>(
+  true
+)
+expectType<TypeEqual<'foo' | 'bar' | undefined, typeof camelCaseConfig.enum>>(
+  true
+)
+expectType<TypeEqual<number[] | undefined, typeof camelCaseConfig.numberArray>>(
+  true
+)
+expectType<TypeEqual<number | undefined, typeof camelCaseConfig.numberFloat>>(
+  true
+)
+expectType<TypeEqual<number | undefined, typeof camelCaseConfig.numberInt>>(
+  true
+)
+expectType<
+  TypeEqual<number | undefined, typeof camelCaseConfig.numberScientific>
+>(true)
+expectType<TypeEqual<string | undefined, typeof camelCaseConfig.string>>(true)
+expectType<TypeEqual<string[] | undefined, typeof camelCaseConfig.stringArray>>(
+  true
+)
