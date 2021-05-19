@@ -84,7 +84,6 @@ describe('full test', () => {
   describe('prod mode with variables coming from process.env', () => {
     const originalProcessEnv: { [key: string]: string | undefined } = {}
     beforeAll(() => {
-      originalProcessEnv['NODE_ENV'] = process.env['NODE_ENV']
       process.env['NODE_ENV'] = 'production'
       forOwn(TEST_CONFIG, (value, key) => {
         originalProcessEnv[key] = process.env[key]
@@ -95,9 +94,7 @@ describe('full test', () => {
     afterAll(() => {
       process.env['NODE_ENV'] = originalProcessEnv['NODE_ENV']
       forOwn(TEST_CONFIG, (_value, key) => {
-        if (typeof originalProcessEnv[key] !== 'undefined') {
-          process.env[key] = originalProcessEnv[key]
-        }
+        delete process.env[key]
       })
     })
 
