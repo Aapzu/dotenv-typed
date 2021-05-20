@@ -8,10 +8,10 @@ Tsdotenv is a package which generates a validated and strongly typed config obje
 
 ```bash
 # using npm
-npm install @aapzu/tsdotenv
+npm install -D @aapzu/tsdotenv
 
 # using yarn
-yarn add @aapzu/tsdotenv
+yarn add -D @aapzu/tsdotenv
 ```
 
 ## Usage
