@@ -1,6 +1,6 @@
 import fs from 'fs'
 import tmp from 'tmp'
-import { DotenvOutput } from '../src/types'
+import { DotenvOutput } from '../src/types/configTypes'
 import {
   TEST_CONFIG,
   NORMALIZED_TEST_SCHEMA,

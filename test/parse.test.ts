@@ -6,7 +6,11 @@ import parse from '../src/parse'
 import normalize from '../src/normalize'
 import validate from '../src/validate'
 import * as casing from '../src/casing'
-import { ConfigSchema, EnvType, NormalizedConfigSchema } from '../src/types'
+import {
+  ConfigSchema,
+  EnvType,
+  NormalizedConfigSchema,
+} from '../src/types/configTypes'
 
 jest.mock('../src/validate')
 jest.mock('../src/normalize', () =>
