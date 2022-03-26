@@ -3,14 +3,14 @@ import fs from 'fs'
 import { camelCaseKeys } from './casing'
 import cast from './cast'
 import normalize from './normalize'
+import { KeysToCamelCase } from './types'
+import { resolve } from 'path'
 import {
   ConfigSchema,
   DotenvOutput,
   EnvType,
-  KeysToCamelCase,
   NormalizedConfigSchema,
-} from './types'
-import { resolve } from 'path'
+} from './types/configTypes'
 import validate from './validate'
 import { pick } from 'lodash'
 

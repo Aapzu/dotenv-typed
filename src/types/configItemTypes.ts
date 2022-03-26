@@ -47,19 +47,9 @@ export type ConfigItemObjectType<T extends ConfigItemType = ConfigItemType> = {
 
 export type ConfigItem = ConfigItemType | ConfigItemObjectType
 
-export type ConfigSchema<
-  S extends Record<string, ConfigItem> = Record<string, ConfigItem>
-> = {
-  [K in keyof S]: S[K]
-}
-
 export type NormalizedConfigItem<
   S extends ConfigItem
 > = S extends ConfigItemType ? ConfigItemObjectType<S> : S
-
-export type NormalizedConfigSchema<S extends ConfigSchema = ConfigSchema> = {
-  [K in keyof S]: NormalizedConfigItem<S[K]>
-}
 
 export type ConfigItemValueWithOptionals<T extends ConfigItem> = T extends {
   optional: true
@@ -67,51 +57,3 @@ export type ConfigItemValueWithOptionals<T extends ConfigItem> = T extends {
 }
   ? ConfigItemValue<T> | undefined
   : ConfigItemValue<T>
-
-export type CamelCase<S extends string | number | symbol> = S extends string
-  ? S extends `${infer P1}_${infer P2}${infer P3}`
-    ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
-    : Lowercase<S>
-  : S
-
-export type KeysToCamelCase<T extends Record<string, unknown>> = {
-  [K in keyof T as CamelCase<K>]: T[K] extends Record<
-    string | number | symbol,
-    unknown
-  >
-    ? KeysToCamelCase<T[K]>
-    : T[K]
-}
-
-type EnvObjectType<S extends ConfigSchema> = {
-  [K in keyof S]: ConfigItemValueWithOptionals<S[K]>
-}
-
-export type EnvType<
-  S extends ConfigSchema,
-  CamelCaseKeys extends boolean = false
-> = CamelCaseKeys extends true
-  ? KeysToCamelCase<EnvObjectType<S>>
-  : EnvObjectType<S>
-
-export type DotenvOutput<
-  S extends NormalizedConfigSchema = NormalizedConfigSchema
-> = {
-  [K in keyof S]: string
-}
-
-export type TypeModule<T extends ConfigItemType> = {
-  isOfType: (
-    item: ConfigItemObjectType | undefined
-  ) => item is ConfigItemObjectType<T>
-  parse: (value: string) => ConfigItemValue<T>
-  validateStringValue: (
-    value: string,
-    schemaObject: ConfigItemObjectType<T>
-  ) => boolean
-  validateValue: (
-    value: unknown,
-    schemaObject: ConfigItemObjectType<T>
-  ) => boolean
-  typeName: string | ((schemaObject?: ConfigItemObjectType<T>) => string)
-}
