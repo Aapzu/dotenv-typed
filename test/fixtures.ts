@@ -2,7 +2,7 @@ import {
   ConfigSchema,
   DotenvOutput,
   NormalizedConfigSchema,
-} from '../src/types'
+} from '../src/types/configTypes'
 
 const nonNormalizedTestSchema = {
   BOOLEAN_ARRAY: Array(Boolean),
