@@ -3,8 +3,8 @@ import {
   ConfigItem,
   ConfigItemObjectType,
   NormalizedConfigItem,
-  TypeModule,
-} from './types'
+} from './types/configItemTypes'
+import { TypeModule } from './types/typeModuleTypes'
 
 import booleanModule from './typeModules/boolean'
 import booleanArrayModule from './typeModules/booleanArray'

@@ -1,10 +1,7 @@
 import { DotenvParseOutput } from 'dotenv'
 import { forOwn } from 'lodash'
-import {
-  ConfigItemDefaultValue,
-  ConfigItemType,
-  NormalizedConfigSchema,
-} from './types'
+import { ConfigItemDefaultValue, ConfigItemType } from './types/configItemTypes'
+import { NormalizedConfigSchema } from './types/configTypes'
 import { getItemTypeModule } from './utils'
 
 const isMissingValue = (
