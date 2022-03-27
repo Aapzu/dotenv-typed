@@ -1,4 +1,5 @@
-import { ConfigItemObjectType, TypeModule } from '../types'
+import { ConfigItemObjectType } from '../types/configItemTypes'
+import { TypeModule } from '../types/typeModuleTypes'
 
 const booleanArrayRegex = /^((?:true|false)(,(?:true|false))*)?$/i
 

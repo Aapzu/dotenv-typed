@@ -1,4 +1,5 @@
-import { ConfigItemObjectType, TypeModule } from '../types'
+import { ConfigItemObjectType } from '../types/configItemTypes'
+import { TypeModule } from '../types/typeModuleTypes'
 
 const stringArrayModule: TypeModule<Array<StringConstructor>> = {
   isOfType: (item): item is ConfigItemObjectType<Array<StringConstructor>> =>

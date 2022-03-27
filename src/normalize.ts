@@ -1,10 +1,6 @@
 import { mapValues } from 'lodash'
-import {
-  ConfigItem,
-  ConfigItemObjectType,
-  ConfigSchema,
-  NormalizedConfigSchema,
-} from './types'
+import { ConfigSchema, NormalizedConfigSchema } from './types/configTypes'
+import { ConfigItem, ConfigItemObjectType } from './types/configItemTypes'
 import { isConfigItemObject } from './utils'
 
 export const normalizeConfigItem = (item: ConfigItem): ConfigItemObjectType => {

@@ -1,5 +1,9 @@
 import { mapValues } from 'lodash'
-import { DotenvOutput, EnvType, NormalizedConfigSchema } from './types'
+import {
+  DotenvOutput,
+  EnvType,
+  NormalizedConfigSchema,
+} from './types/configTypes'
 
 import { getItemTypeModule } from './utils'
 
