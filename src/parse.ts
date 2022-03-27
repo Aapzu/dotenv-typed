@@ -50,28 +50,28 @@ interface ParseOptions {
 }
 
 function parse<
-  S extends ConfigSchema,
-  O extends Readonly<Partial<ParseOptions>>
+  Schema extends ConfigSchema,
+  Options extends Readonly<Partial<ParseOptions>>
 >(
-  schema: S,
-  options: O & { camelCaseKeys: true }
-): KeysToCamelCase<EnvType<NormalizedConfigSchema<S>>>
+  schema: Schema,
+  options: Options & { camelCaseKeys: true }
+): KeysToCamelCase<EnvType<NormalizedConfigSchema<Schema>>>
 function parse<
-  S extends ConfigSchema,
-  O extends Readonly<Partial<ParseOptions>>
->(schema: S, options?: O): EnvType<NormalizedConfigSchema<S>>
+  Schema extends ConfigSchema,
+  Options extends Readonly<Partial<ParseOptions>>
+>(schema: Schema, options?: Options): EnvType<NormalizedConfigSchema<Schema>>
 function parse<
-  S extends ConfigSchema,
-  O extends Readonly<Partial<ParseOptions>>
+  Schema extends ConfigSchema,
+  Options extends Readonly<Partial<ParseOptions>>
 >(
   /**
    * .env file schema
    */
-  schema: S,
-  options?: O
+  schema: Schema,
+  options?: Options
 ):
-  | KeysToCamelCase<EnvType<NormalizedConfigSchema<S>>>
-  | EnvType<NormalizedConfigSchema<S>> {
+  | KeysToCamelCase<EnvType<NormalizedConfigSchema<Schema>>>
+  | EnvType<NormalizedConfigSchema<Schema>> {
   const {
     camelCaseKeys: camelCaseKeysOpt = false,
     path = resolve(process.cwd(), '.env'),
@@ -90,7 +90,7 @@ function parse<
   const normalizedSchema = normalize(schema)
 
   const processEnvVariables = pick(process.env, Object.keys(schema)) as {
-    [K in keyof S]: string
+    [K in keyof Schema]: string
   }
   const parsedOutput =
     process.env['NODE_ENV'] !== 'production' || useDotenvInProduction
