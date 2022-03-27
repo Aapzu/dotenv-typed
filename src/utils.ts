@@ -6,13 +6,7 @@ import {
 } from './types/configItemTypes'
 import { TypeModule } from './types/typeModuleTypes'
 
-import booleanModule from './typeModules/boolean'
-import booleanArrayModule from './typeModules/booleanArray'
-import enumModule from './typeModules/enum'
-import numberModule from './typeModules/number'
-import numberArrayModule from './typeModules/numberArray'
-import stringModule from './typeModules/string'
-import stringArrayModule from './typeModules/stringArray'
+import typeModules from './typeModules'
 
 export const isConfigItemObject = (
   item: ConfigItem
@@ -23,15 +17,7 @@ export const getItemTypeModule = <T extends ConfigItem>(
 ): TypeModule<NormalizedConfigItem<T>['type']> => {
   const normalizedItem = item && normalizeConfigItem(item)
 
-  for (const typeModule of [
-    booleanModule,
-    booleanArrayModule,
-    enumModule,
-    numberModule,
-    numberArrayModule,
-    stringModule,
-    stringArrayModule,
-  ]) {
+  for (const typeModule of typeModules) {
     if (typeModule.isOfType(normalizedItem)) {
       return typeModule as TypeModule<NormalizedConfigItem<T>['type']>
     }
