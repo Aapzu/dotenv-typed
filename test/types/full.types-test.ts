@@ -1,4 +1,4 @@
-import { expectType, TypeEqual } from 'ts-expect'
+import { expectType } from 'ts-expect'
 import { parse } from '../..'
 import {
   NORMALIZED_TEST_SCHEMA,
@@ -8,65 +8,43 @@ import {
 // Test normal config parsing
 const config = parse(NORMALIZED_TEST_SCHEMA)
 
-expectType<TypeEqual<boolean[], typeof config.BOOLEAN_ARRAY>>(true)
-expectType<TypeEqual<boolean, typeof config.BOOLEAN_FALSE>>(true)
-expectType<TypeEqual<boolean, typeof config.BOOLEAN_TRUE>>(true)
-expectType<TypeEqual<'foo' | 'bar', typeof config.ENUM>>(true)
-expectType<TypeEqual<number[], typeof config.NUMBER_ARRAY>>(true)
-expectType<TypeEqual<number, typeof config.NUMBER_FLOAT>>(true)
-expectType<TypeEqual<number, typeof config.NUMBER_INT>>(true)
-expectType<TypeEqual<number, typeof config.NUMBER_SCIENTIFIC>>(true)
-expectType<TypeEqual<string, typeof config.STRING>>(true)
-expectType<TypeEqual<string[], typeof config.STRING_ARRAY>>(true)
+expectType<boolean[]>(config.BOOLEAN_ARRAY)
+expectType<boolean>(config.BOOLEAN_FALSE)
+expectType<boolean>(config.BOOLEAN_TRUE)
+expectType<'foo' | 'bar'>(config.ENUM)
+expectType<number[]>(config.NUMBER_ARRAY)
+expectType<number>(config.NUMBER_FLOAT)
+expectType<number>(config.NUMBER_INT)
+expectType<number>(config.NUMBER_SCIENTIFIC)
+expectType<string>(config.STRING)
+expectType<string[]>(config.STRING_ARRAY)
 
 // Test config parsing with optional values
 const optConfig = parse(NORMALIZED_TEST_SCHEMA_WITH_OPTIONALS)
 
-expectType<TypeEqual<boolean[] | undefined, typeof optConfig.BOOLEAN_ARRAY>>(
-  true
-)
-expectType<TypeEqual<boolean | undefined, typeof optConfig.BOOLEAN_FALSE>>(true)
-expectType<TypeEqual<boolean | undefined, typeof optConfig.BOOLEAN_TRUE>>(true)
-expectType<TypeEqual<'foo' | 'bar' | undefined, typeof optConfig.ENUM>>(true)
-expectType<TypeEqual<number[] | undefined, typeof optConfig.NUMBER_ARRAY>>(true)
-expectType<TypeEqual<number | undefined, typeof optConfig.NUMBER_FLOAT>>(true)
-expectType<TypeEqual<number | undefined, typeof optConfig.NUMBER_INT>>(true)
-expectType<TypeEqual<number | undefined, typeof optConfig.NUMBER_SCIENTIFIC>>(
-  true
-)
-expectType<TypeEqual<string | undefined, typeof optConfig.STRING>>(true)
-expectType<TypeEqual<string[] | undefined, typeof optConfig.STRING_ARRAY>>(true)
+expectType<boolean[] | undefined>(optConfig.BOOLEAN_ARRAY)
+expectType<boolean | undefined>(optConfig.BOOLEAN_FALSE)
+expectType<boolean | undefined>(optConfig.BOOLEAN_TRUE)
+expectType<'foo' | 'bar' | undefined>(optConfig.ENUM)
+expectType<number[] | undefined>(optConfig.NUMBER_ARRAY)
+expectType<number | undefined>(optConfig.NUMBER_FLOAT)
+expectType<number | undefined>(optConfig.NUMBER_INT)
+expectType<number | undefined>(optConfig.NUMBER_SCIENTIFIC)
+expectType<string | undefined>(optConfig.STRING)
+expectType<string[] | undefined>(optConfig.STRING_ARRAY)
 
 // Test config parsing with cameL case keys
 const camelCaseConfig = parse(NORMALIZED_TEST_SCHEMA_WITH_OPTIONALS, {
   camelCaseKeys: true,
 })
 
-expectType<
-  TypeEqual<boolean[] | undefined, typeof camelCaseConfig.booleanArray>
->(true)
-expectType<TypeEqual<boolean | undefined, typeof camelCaseConfig.booleanFalse>>(
-  true
-)
-expectType<TypeEqual<boolean | undefined, typeof camelCaseConfig.booleanTrue>>(
-  true
-)
-expectType<TypeEqual<'foo' | 'bar' | undefined, typeof camelCaseConfig.enum>>(
-  true
-)
-expectType<TypeEqual<number[] | undefined, typeof camelCaseConfig.numberArray>>(
-  true
-)
-expectType<TypeEqual<number | undefined, typeof camelCaseConfig.numberFloat>>(
-  true
-)
-expectType<TypeEqual<number | undefined, typeof camelCaseConfig.numberInt>>(
-  true
-)
-expectType<
-  TypeEqual<number | undefined, typeof camelCaseConfig.numberScientific>
->(true)
-expectType<TypeEqual<string | undefined, typeof camelCaseConfig.string>>(true)
-expectType<TypeEqual<string[] | undefined, typeof camelCaseConfig.stringArray>>(
-  true
-)
+expectType<boolean[] | undefined>(camelCaseConfig.booleanArray)
+expectType<boolean | undefined>(camelCaseConfig.booleanFalse)
+expectType<boolean | undefined>(camelCaseConfig.booleanTrue)
+expectType<'foo' | 'bar' | undefined>(camelCaseConfig.enum)
+expectType<number[] | undefined>(camelCaseConfig.numberArray)
+expectType<number | undefined>(camelCaseConfig.numberFloat)
+expectType<number | undefined>(camelCaseConfig.numberInt)
+expectType<number | undefined>(camelCaseConfig.numberScientific)
+expectType<string | undefined>(camelCaseConfig.string)
+expectType<string[] | undefined>(camelCaseConfig.stringArray)

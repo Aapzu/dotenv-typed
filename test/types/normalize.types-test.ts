@@ -1,4 +1,4 @@
-import { expectType, TypeEqual } from 'ts-expect'
+import { expectType } from 'ts-expect'
 import normalize from '../../src/normalize'
 import { NORMALIZED_TEST_SCHEMA } from '../fixtures'
 
@@ -56,16 +56,16 @@ type StringSchema = {
   readonly default: 'foo'
 }
 
-expectType<TypeEqual<BooleanTrueSchema, typeof BOOLEAN_TRUE>>(true)
-expectType<TypeEqual<BooleanFalseSchema, typeof BOOLEAN_FALSE>>(true)
+expectType<BooleanTrueSchema>(BOOLEAN_TRUE)
+expectType<BooleanFalseSchema>(BOOLEAN_FALSE)
 
-expectType<TypeEqual<NumberIntSchema, typeof NUMBER_INT>>(true)
-expectType<TypeEqual<NumberFloatSchema, typeof NUMBER_FLOAT>>(true)
-expectType<TypeEqual<NumberScientificSchema, typeof NUMBER_SCIENTIFIC>>(true)
+expectType<NumberIntSchema>(NUMBER_INT)
+expectType<NumberFloatSchema>(NUMBER_FLOAT)
+expectType<NumberScientificSchema>(NUMBER_SCIENTIFIC)
 
-expectType<TypeEqual<EnumSchema, typeof ENUM>>(true)
-expectType<TypeEqual<NumberArraySchema, typeof NUMBER_ARRAY>>(true)
-expectType<TypeEqual<StringArraySchema, typeof STRING_ARRAY>>(true)
-expectType<TypeEqual<BooleanArraySchema, typeof BOOLEAN_ARRAY>>(true)
+expectType<EnumSchema>(ENUM)
+expectType<NumberArraySchema>(NUMBER_ARRAY)
+expectType<StringArraySchema>(STRING_ARRAY)
+expectType<BooleanArraySchema>(BOOLEAN_ARRAY)
 
-expectType<TypeEqual<StringSchema, typeof STRING>>(true)
+expectType<StringSchema>(STRING)
