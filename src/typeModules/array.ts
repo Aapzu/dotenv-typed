@@ -6,10 +6,7 @@ import {
 } from '../types/configItemTypes'
 import { TypeModule } from '../types/typeModuleTypes'
 
-const arrayModule = <
-  T extends BaseConfigItemType,
-  A extends Array<T> = Array<T>
->(
+const array = <T extends BaseConfigItemType, A extends Array<T> = Array<T>>(
   itemType: TypeModule<T>
 ): TypeModule<A> => {
   return {
@@ -58,4 +55,4 @@ const arrayModule = <
   }
 }
 
-export default arrayModule
+export default array

@@ -2,16 +2,16 @@ import booleanModule from './boolean'
 import enumModule from './enum'
 import numberModule from './number'
 import stringModule from './string'
-import arrayModule from './arrayModule'
+import array from './array'
 
 const typeModules = [
   booleanModule,
   numberModule,
   stringModule,
   enumModule,
-  arrayModule(booleanModule),
-  arrayModule(numberModule),
-  arrayModule(stringModule),
+  array(booleanModule),
+  array(numberModule),
+  array(stringModule),
 ]
 
 export default typeModules

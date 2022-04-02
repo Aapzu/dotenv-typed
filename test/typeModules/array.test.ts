@@ -1,4 +1,4 @@
-import arrayModule from '../../src/typeModules/arrayModule'
+import array from '../../src/typeModules/array'
 import booleanModule from '../../src/typeModules/boolean'
 import numberModule from '../../src/typeModules/number'
 import stringModule from '../../src/typeModules/string'
@@ -9,7 +9,7 @@ const StringArray = Array(String)
 
 describe('array module', () => {
   describe('booleanArray module', () => {
-    const { isOfType, validateStringValue, validateValue, parse } = arrayModule(
+    const { isOfType, validateStringValue, validateValue, parse } = array(
       booleanModule
     )
 
@@ -94,7 +94,7 @@ describe('array module', () => {
     })
   })
   describe('numberArray module', () => {
-    const { isOfType, validateStringValue, validateValue, parse } = arrayModule(
+    const { isOfType, validateStringValue, validateValue, parse } = array(
       numberModule
     )
 
@@ -185,7 +185,7 @@ describe('array module', () => {
   })
 
   describe('stringArray module', () => {
-    const { isOfType, validateStringValue, validateValue, parse } = arrayModule(
+    const { isOfType, validateStringValue, validateValue, parse } = array(
       stringModule
     )
 
