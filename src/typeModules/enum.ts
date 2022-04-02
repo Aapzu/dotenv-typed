@@ -12,11 +12,11 @@ const enumModule: TypeModule<Array<string>> = {
 
   validateStringValue: (
     value: string,
-    schema: ConfigItemObjectType<string[]>
-  ) => schema.type.includes(value),
+    type: ConfigItemObjectType<string[]>['type']
+  ) => type.includes(value),
 
-  validateValue: (value, schema) =>
-    typeof value === 'string' && schema.type.includes(value),
+  validateValue: (value, type) =>
+    typeof value === 'string' && type.includes(value),
 
   typeName: (schema) => (schema ? `enum ${schema.type.join(' | ')}` : 'enum'),
 }
