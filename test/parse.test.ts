@@ -5,7 +5,7 @@ import cast from '../src/cast'
 import parse from '../src/parse'
 import normalize from '../src/normalize'
 import validate from '../src/validate'
-import * as casing from '../src/casing'
+import * as casing from '../src/utils/casing'
 import {
   ConfigSchema,
   EnvType,
