@@ -1,4 +1,4 @@
-import { camelCaseKeys } from '../src/casing'
+import { camelCaseKeys } from '../../src/utils/casing'
 
 describe('casing', () => {
   describe('camelCaseKeys', () => {

@@ -1,7 +1,7 @@
 import { mapValues } from 'lodash'
 import { ConfigSchema, NormalizedConfigSchema } from './types/configTypes'
 import { ConfigItem, ConfigItemObjectType } from './types/configItemTypes'
-import { isConfigItemObject } from './utils'
+import { isConfigItemObject } from './utils/configUtils'
 
 export const normalizeConfigItem = (item: ConfigItem): ConfigItemObjectType => {
   if (isConfigItemObject(item)) {
