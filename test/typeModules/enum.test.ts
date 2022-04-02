@@ -28,7 +28,7 @@ describe('enum module', () => {
 
   describe('validateStringValue', () => {
     it.each(['foo', 'bar'])(`returns true for %s`, (value) => {
-      expect(validateStringValue(value, schema)).toBe(true)
+      expect(validateStringValue(value, schema['type'])).toBe(true)
     })
 
     describe.each`
@@ -40,14 +40,14 @@ describe('enum module', () => {
       ${'null and undefined'}  | ${['null', 'undefined']}
     `('$label', ({ values }) => {
       it.each(values as string[])(`returns false for %s`, (value) => {
-        expect(validateStringValue(value, schema)).toBe(false)
+        expect(validateStringValue(value, schema['type'])).toBe(false)
       })
     })
   })
 
   describe('isValidEnumDefaultValue', () => {
     it.each(['foo', 'bar'])(`returns true for %s`, (value) => {
-      expect(validateValue(value, schema)).toBe(true)
+      expect(validateValue(value, schema['type'])).toBe(true)
     })
     describe.each`
       label                   | values
@@ -58,7 +58,7 @@ describe('enum module', () => {
       it.each(values as (string | number | null | undefined)[])(
         `returns false for %s`,
         (value) => {
-          expect(validateValue(value, schema)).toBe(false)
+          expect(validateValue(value, schema['type'])).toBe(false)
         }
       )
     })

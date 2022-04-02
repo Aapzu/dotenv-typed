@@ -2,7 +2,7 @@ import { DotenvParseOutput } from 'dotenv'
 import { forOwn } from 'lodash'
 import { ConfigItemDefaultValue, ConfigItemType } from './types/configItemTypes'
 import { NormalizedConfigSchema } from './types/configTypes'
-import { getItemTypeModule } from './utils'
+import { getItemTypeModule } from './utils/getItemTypeModule'
 
 const isMissingValue = (
   key: string,
@@ -54,14 +54,14 @@ const validate = <S extends NormalizedConfigSchema>(
 
     // If configValue === undefined, we know there must be a default value or optional === true
     if (configValue !== undefined) {
-      if (!validateStringValue(configValue, schemaObject)) {
+      if (!validateStringValue(configValue, schemaObject['type'])) {
         throw new Error(getNotValidErrorMessage(key, configValue, type))
       }
     }
 
     if (
       schemaObject?.default &&
-      !validateValue(schemaObject.default, schemaObject)
+      !validateValue(schemaObject.default, schemaObject['type'])
     ) {
       throw new Error(
         getNotValidDefaultErrorMessage(key, schemaObject.default, type)

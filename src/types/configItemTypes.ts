@@ -8,25 +8,25 @@ export enum ConfigItemTypeName {
   BooleanArray,
 }
 
-type ArrayType<T> = Array<T> | Readonly<Array<T>>
+export type ArrayType<T> = Array<T> | Readonly<Array<T>>
 
-export type ConfigItemType =
+export type EnumType = ArrayType<string>
+
+export type BaseConfigItemType =
   | StringConstructor
   | NumberConstructor
   | BooleanConstructor
-  | ArrayType<string>
-  | ArrayType<NumberConstructor>
-  | ArrayType<StringConstructor>
-  | ArrayType<BooleanConstructor>
+
+export type ConfigItemType =
+  | BaseConfigItemType
+  | ArrayType<BaseConfigItemType>
+  | EnumType
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ReturnTypeArg = (...args: any) => any
 
-export type ConfigItemValue<
-  Item extends ConfigItem,
-  Type extends ConfigItemType = Item extends ConfigItemObjectType
-    ? Item['type']
-    : Item
+export type ConfigValueByItemType<
+  Type extends ConfigItemType
 > = Type extends ReturnTypeArg
   ? ReturnType<Type> // StringConstructor -> string, BooleanConstructor -> boolean etc
   : Type extends ArrayType<infer U> // If any array
@@ -34,6 +34,13 @@ export type ConfigItemValue<
     ? Array<ReturnType<U>> // Array<StringConstructor> -> string[] etc
     : U // ['foo', 'bar', 'baz'] -> 'foo' | 'bar' | 'baz'
   : never
+
+export type ConfigItemValue<
+  Item extends ConfigItem,
+  Type extends ConfigItemType = Item extends ConfigItemObjectType
+    ? Item['type']
+    : Item
+> = ConfigValueByItemType<Type>
 
 export type ConfigItemDefaultValue<T extends ConfigItemType> =
   | ConfigItemValue<T>
