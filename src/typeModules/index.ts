@@ -1,9 +1,8 @@
-// import arrayModule from './array'
-import arrayModule from './array'
 import booleanModule from './boolean'
 import enumModule from './enum'
 import numberModule from './number'
 import stringModule from './string'
+import arrayModule from './arrayModule'
 
 const typeModules = [
   booleanModule,

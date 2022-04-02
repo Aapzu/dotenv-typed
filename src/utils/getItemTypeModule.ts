@@ -1,16 +1,7 @@
-import { normalizeConfigItem } from './normalize'
-import {
-  ConfigItem,
-  ConfigItemObjectType,
-  NormalizedConfigItem,
-} from './types/configItemTypes'
-import { TypeModule } from './types/typeModuleTypes'
-
-import typeModules from './typeModules'
-
-export const isConfigItemObject = (
-  item: ConfigItem
-): item is ConfigItemObjectType => 'type' in item
+import { normalizeConfigItem } from '../normalize'
+import typeModules from '../typeModules'
+import { ConfigItem, NormalizedConfigItem } from '../types/configItemTypes'
+import { TypeModule } from '../types/typeModuleTypes'
 
 export const getItemTypeModule = <T extends ConfigItem>(
   item: T | undefined

@@ -57,4 +57,5 @@ const arrayModule = <
     typeName: `${itemType.typeName} array`,
   }
 }
+
 export default arrayModule
