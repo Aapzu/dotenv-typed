@@ -5,7 +5,7 @@ import {
   NormalizedConfigSchema,
 } from './types/configTypes'
 
-import { getItemTypeModule } from './utils/getItemTypeModule'
+import { getItemTypeModule } from './getItemTypeModule'
 
 const cast = <S extends NormalizedConfigSchema>(
   schema: S,

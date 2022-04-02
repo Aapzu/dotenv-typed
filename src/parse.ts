@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import fs from 'fs'
-import { camelCaseKeys } from './casing'
+import { camelCaseKeys } from './utils/casing'
 import cast from './cast'
 import normalize from './normalize'
 import { KeysToCamelCase } from './types'
