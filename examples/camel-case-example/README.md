@@ -1,6 +1,6 @@
-# tsdotenv general-example
+# tsdotenv camel-case-example
 
-In general example both `.env` file and the `process.env` variables are used.
+In camelCase example the keys are automatically converted into camel case. Both `.env` file and the `process.env` variables are used.
 
 ## Running
 
