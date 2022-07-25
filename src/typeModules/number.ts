@@ -1,7 +1,8 @@
 import { ConfigItemObjectType } from '../types/configItemTypes'
 import { TypeModule } from '../types/typeModuleTypes'
 
-export const baseNumberRegex = /(?:NaN|-?(?:(?:\d+|\d*\.\d+)(?:[E|e][+|-]?\d+)?|Infinity))/i
+export const baseNumberRegex =
+  /(?:NaN|-?(?:(?:\d+|\d*\.\d+)(?:[E|e][+|-]?\d+)?|Infinity))/i
 export const numberRegex = RegExp(
   '^' + baseNumberRegex.source + '$',
   baseNumberRegex.flags

@@ -76,7 +76,6 @@ function parse<
     camelCaseKeys: camelCaseKeysOpt = false,
     path = resolve(process.cwd(), '.env'),
     encoding = 'utf8',
-    debug = false,
     validate: validateOpt = true,
     useDotenvInProduction = false,
     overrideProcessEnvVariables = false,
@@ -92,9 +91,10 @@ function parse<
   const processEnvVariables = pick(process.env, Object.keys(schema)) as {
     [K in keyof Schema]: string
   }
+
   const parsedOutput =
     process.env['NODE_ENV'] !== 'production' || useDotenvInProduction
-      ? dotenv.parse(envFile, { debug })
+      ? dotenv.parse(envFile)
       : {}
 
   const config = overrideProcessEnvVariables

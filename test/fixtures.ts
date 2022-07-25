@@ -79,17 +79,16 @@ export const EMPTY_TEST_CONFIG: DotenvOutput<
   STRING_ARRAY: '',
 }
 
-export const INVALID_TEST_CONFIG: DotenvOutput<
-  typeof NORMALIZED_TEST_SCHEMA
-> = {
-  BOOLEAN_ARRAY: 'foo,bar',
-  BOOLEAN_FALSE: 'asdf',
-  BOOLEAN_TRUE: 'asdf',
-  ENUM: 'baz',
-  NUMBER_ARRAY: '1,2,foo,4',
-  NUMBER_FLOAT: 'asdf',
-  NUMBER_INT: 'asdf',
-  NUMBER_SCIENTIFIC: 'asdf',
-  STRING: 'cannot be invalid',
-  STRING_ARRAY: 'cannot be invalid',
-}
+export const INVALID_TEST_CONFIG: DotenvOutput<typeof NORMALIZED_TEST_SCHEMA> =
+  {
+    BOOLEAN_ARRAY: 'foo,bar',
+    BOOLEAN_FALSE: 'asdf',
+    BOOLEAN_TRUE: 'asdf',
+    ENUM: 'baz',
+    NUMBER_ARRAY: '1,2,foo,4',
+    NUMBER_FLOAT: 'asdf',
+    NUMBER_INT: 'asdf',
+    NUMBER_SCIENTIFIC: 'asdf',
+    STRING: 'cannot be invalid',
+    STRING_ARRAY: 'cannot be invalid',
+  }

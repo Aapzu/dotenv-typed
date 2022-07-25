@@ -46,9 +46,8 @@ const validate = <S extends NormalizedConfigSchema>(
 
     const configValue = config[key]
 
-    const { validateStringValue, validateValue, typeName } = getItemTypeModule(
-      schemaObject
-    )
+    const { validateStringValue, validateValue, typeName } =
+      getItemTypeModule(schemaObject)
 
     const type = typeof typeName === 'string' ? typeName : typeName(schema[key])
 

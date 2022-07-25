@@ -1,15 +1,12 @@
-import { DotenvParseOutput } from 'dotenv'
-import { BaseEncodingOptions, PathLike } from 'fs'
+import dotenv from 'dotenv'
+import fs from 'node:fs'
 
 jest.mock('fs', () => ({
   ...jest.requireActual('fs'),
   readFileSync: jest.fn(
     (
-      path: PathLike | number,
-      options?:
-        | (BaseEncodingOptions & { flag?: string })
-        | BufferEncoding
-        | null
+      path: Parameters<typeof fs.readFileSync>[0],
+      options?: Parameters<typeof fs.readFileSync>[1]
     ): string | Buffer => {
       const encoding = typeof options === 'string' ? options : options?.encoding
       const string = encoding
@@ -23,7 +20,9 @@ jest.mock('fs', () => ({
 jest.mock('dotenv', () => ({
   ...jest.requireActual('dotenv'),
   parse: jest.fn(
-    (src: string | Buffer): DotenvParseOutput => {
+    (
+      src: Parameters<typeof dotenv.parse>[0]
+    ): ReturnType<typeof dotenv.parse> => {
       return {
         PARSED: src.toString(),
       }

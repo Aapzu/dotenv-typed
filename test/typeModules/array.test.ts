@@ -9,9 +9,8 @@ const StringArray = Array(String)
 
 describe('array module', () => {
   describe('booleanArray module', () => {
-    const { isOfType, validateStringValue, validateValue, parse } = array(
-      booleanModule
-    )
+    const { isOfType, validateStringValue, validateValue, parse } =
+      array(booleanModule)
 
     describe('isOfType', () => {
       it('returns true for correct BooleanArray type ', () => {
@@ -94,9 +93,8 @@ describe('array module', () => {
     })
   })
   describe('numberArray module', () => {
-    const { isOfType, validateStringValue, validateValue, parse } = array(
-      numberModule
-    )
+    const { isOfType, validateStringValue, validateValue, parse } =
+      array(numberModule)
 
     describe('isOfType', () => {
       it('returns true for correct NumberArray type ', () => {
@@ -185,9 +183,8 @@ describe('array module', () => {
   })
 
   describe('stringArray module', () => {
-    const { isOfType, validateStringValue, validateValue, parse } = array(
-      stringModule
-    )
+    const { isOfType, validateStringValue, validateValue, parse } =
+      array(stringModule)
 
     describe('isOfType', () => {
       it('returns true for correct StringArray type ', () => {
