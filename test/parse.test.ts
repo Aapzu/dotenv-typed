@@ -69,20 +69,7 @@ describe('parse', () => {
         path: 'foobar',
       })
       expect(dotenv.parse).toBeCalledTimes(1)
-      expect(dotenv.parse).toBeCalledWith('foobar readFileSync', {
-        debug: false,
-      })
-    })
-
-    it('passed debug option to dotenv.parse', () => {
-      parse(TEST_SCHEMA, {
-        debug: true,
-        path: 'foobar',
-      })
-      expect(dotenv.parse).toBeCalledTimes(1)
-      expect(dotenv.parse).toBeCalledWith('foobar readFileSync', {
-        debug: true,
-      })
+      expect(dotenv.parse).toBeCalledWith('foobar readFileSync')
     })
 
     it('calls dotenv.parse even if NODE_ENV=production if useDotenvInProduction=true', () => {
@@ -93,9 +80,7 @@ describe('parse', () => {
         useDotenvInProduction: true,
       })
       expect(dotenv.parse).toBeCalledTimes(1)
-      expect(dotenv.parse).toBeCalledWith('foobar readFileSync', {
-        debug: false,
-      })
+      expect(dotenv.parse).toBeCalledWith('foobar readFileSync')
       process.env['NODE_ENV'] = oldNodeEnv
     })
 

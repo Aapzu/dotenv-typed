@@ -25,15 +25,14 @@ export type ConfigItemType =
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ReturnTypeArg = (...args: any) => any
 
-export type ConfigValueByItemType<
-  Type extends ConfigItemType
-> = Type extends ReturnTypeArg
-  ? ReturnType<Type> // StringConstructor -> string, BooleanConstructor -> boolean etc
-  : Type extends ArrayType<infer U> // If any array
-  ? U extends ReturnTypeArg
-    ? Array<ReturnType<U>> // Array<StringConstructor> -> string[] etc
-    : U // ['foo', 'bar', 'baz'] -> 'foo' | 'bar' | 'baz'
-  : never
+export type ConfigValueByItemType<Type extends ConfigItemType> =
+  Type extends ReturnTypeArg
+    ? ReturnType<Type> // StringConstructor -> string, BooleanConstructor -> boolean etc
+    : Type extends ArrayType<infer U> // If any array
+    ? U extends ReturnTypeArg
+      ? Array<ReturnType<U>> // Array<StringConstructor> -> string[] etc
+      : U // ['foo', 'bar', 'baz'] -> 'foo' | 'bar' | 'baz'
+    : never
 
 export type ConfigItemValue<
   Item extends ConfigItem,
@@ -54,9 +53,8 @@ export type ConfigItemObjectType<T extends ConfigItemType = ConfigItemType> = {
 
 export type ConfigItem = ConfigItemType | ConfigItemObjectType
 
-export type NormalizedConfigItem<
-  S extends ConfigItem
-> = S extends ConfigItemType ? ConfigItemObjectType<S> : S
+export type NormalizedConfigItem<S extends ConfigItem> =
+  S extends ConfigItemType ? ConfigItemObjectType<S> : S
 
 export type ConfigItemValueWithOptionals<T extends ConfigItem> = T extends {
   optional: true
