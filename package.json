@@ -5,17 +5,17 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "test": "npm run test-types && jest",
+    "build": "pnpm exec tsc",
+    "test": "pnpm run test-types && pnpm exec jest",
     "eslint": "eslint .",
-    "eslint:fix": "npm run eslint -- --fix",
-    "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write .",
-    "ts-compile": "tsc --noEmit",
-    "test-types": "tsc --noEmit --project test.tsconfig.json",
-    "lint": "npm run ts-compile && npm run prettier && npm run eslint",
-    "prepack": "npm run build",
-    "prepare": "husky install"
+    "eslint:fix": "pnpm run eslint -- --fix",
+    "prettier": "pnpm exec prettier --check .",
+    "prettier:fix": "pnpm exec prettier --write .",
+    "ts-compile": "pnpm tsc --noEmit",
+    "test-types": "pnpm tsc --noEmit --project test.tsconfig.json",
+    "lint": "pnpm run ts-compile && npm run prettier && npm run eslint",
+    "prepack": "pnpm run build",
+    "prepare": "pnpm exec husky install"
   },
   "keywords": [
     "dotenv",
